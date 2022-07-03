@@ -9,11 +9,70 @@ name: CI
   pull_request:
     branches:
       - develop
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      # Git Checkout
+      - name: Checkout Code
+        uses: actions/checkout@v3.0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      # MegaLinter: https://megalinter.github.io/configuration/
+      - name: MegaLinter
+        uses: megalinter/megalinter@v5.16.1
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Apply linter fixes configuration
+          APPLY_FIXES: none
+          APPLY_FIXES_EVENT: pull_request
+          APPLY_FIXES_MODE: commit
+
+          # CUSTOM ENV VARIABLES
+
+      - name: Archive production artifacts
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: MegaLinter reports
+          path: |
+            report
+            mega-linter.log
+          retention-days: 10
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - name: Checkout
+        uses: actions/checkout@v3.0.2
+      - name: Put back the git branch into git (Earthly uses it for tagging)
+        run: |
+          branch=""
+          if [ -n "$GITHUB_HEAD_REF" ]; then
+            branch="$GITHUB_HEAD_REF"
+          else
+            branch="${GITHUB_REF##*/}"
+          fi
+          git checkout -b "$branch" || true
+      - name: Download latest earthly
+        run: |
+          sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly && chmod +x /usr/local/bin/earthly && /usr/local/bin/earthly bootstrap --with-autocomplete'
+      - name: Earthly version
+        run: earthly --version
       - name: Cache Cargo dependencies
         uses: actions/cache@v3.0.2
         with:
