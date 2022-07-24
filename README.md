@@ -1,6 +1,6 @@
 <!-- GitHub Flavored Markdown Spec: https://github.github.com/gfm/ -->
 
-# Hi my name is Vyas 😄
+# Hi I'm Vyas 😄
 
 ![Vyas's github stats](https://github-readme-stats.vercel.app/api?username=vyas-n&count_private=true&show_icons=true)
 
