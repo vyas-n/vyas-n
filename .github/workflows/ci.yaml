@@ -1,0 +1,118 @@
+---
+# GitHub Actions syntax: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+name: CI
+"on":
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      checks: write
+      pull-requests: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3.0.2
+        with:
+          token: ${{ github.token }}
+          fetch-depth: 0
+      - name: MegaLinter
+        uses: oxsecurity/megalinter@v6.1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload MegaLinter artifacts
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: MegaLinter reports
+          path: |
+            megalinter-reports
+          retention-days: 1
+      - name: Upload MegaLinter scan results to GitHub Security tab
+        if: ${{ success() }} || ${{ failure() }}
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "megalinter-reports/megalinter-report.sarif"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.2
+      - name: Download latest earthly
+        uses: earthly/actions-setup@v1.0.1
+        with:
+          version: "latest"
+      - name: Run build
+        run: |
+          earthly +all
+      - name: Publish
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          earthly --push --secret CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN --secret CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID +publish
+  tag:
+    name: Tag
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      checks: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.2
+        with:
+          ref: main
+      - name: Get Next Version # Will fail if no commits exist between main and last tag
+        id: semver
+        uses: ietf-tools/semver-action@v1.1.1
+        with: # Config based on https://www.conventionalcommits.org/en/v1.0.0/
+          token: ${{ github.token }}
+          branch: main
+          patchList: fix, bugfix, perf, refactor, test, tests, build, chore, ci, docs, style, patch, bug, doc
+      - uses: chrisdickinson/setup-yq@v1.0.1
+      - name: Check if tag matches version in files
+        run: |
+          [[ $(docker run --rm -v "$PWD":/root ghcr.io/tomwright/dasel:alpine select -f Cargo.toml -s '.package.version') == "${{ steps.semver.outputs.nextStrict }}" ]]
+      - name: Download latest earthly
+        uses: earthly/actions-setup@v1.0.1
+        with:
+          version: "latest"
+      - name: Check if README.md is up-to-date
+        run: |
+          earthly +fmt
+          git diff --exit-code
+      - name: Bump version and push tag
+        id: bump
+        uses: anothrNick/github-tag-action@1.39.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CUSTOM_TAG: ${{ steps.semver.outputs.nextStrict }}
+      - name: Run build
+        run: |
+          earthly --allow-privileged +all
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1.0.4
+        with:
+          token: ${{ github.token }}
+      - uses: ncipollo/release-action@v1.10.0
+        with:
+          token: ${{ github.token }}
+          body: ${{ steps.changelog.outputs.changes }}
+          tag: ${{ steps.semver.outputs.nextStrict }}
+          name: ${{ steps.semver.outputs.nextStrict }}

@@ -1,0 +1,8 @@
+// Renovate Config: https://docs.renovatebot.com/configuration-options/
+{
+  enabled: true,
+  extends: ["config:base", ":semanticCommitType(build)"],
+  semanticCommits: "enabled",
+  dependencyDashboard: true,
+  labels: ["dependencies"],
+}
