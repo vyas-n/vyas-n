@@ -1,0 +1,10 @@
+---
+# MegaLinter Config: https://oxsecurity.github.io/megalinter/configuration/
+APPLY_FIXES: none
+DISABLE:
+  - COPYPASTE
+  - SPELL
+  # - REPOSITORY
+SHOW_ELAPSED_TIME: true
+FILEIO_REPORTER: false
+VALIDATE_ALL_CODEBASE: true
