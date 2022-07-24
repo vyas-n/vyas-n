@@ -34,4 +34,4 @@ publish:
     RUN npm ci
     COPY +build/dist ./dist
     COPY --dir .git .
-    RUN --push --secret CLOUDFLARE_API_TOKEN --secret CLOUDFLARE_ACCOUNT_ID npx wrangler pages publish --project-name vyas-n --branch $(git branch --show-current) ./dist
+    RUN --push --secret CLOUDFLARE_API_TOKEN --secret CLOUDFLARE_ACCOUNT_ID npx wrangler pages publish --project-name vyas-n --branch "$(git branch --show-current)" ./dist
