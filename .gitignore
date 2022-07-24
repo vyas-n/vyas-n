@@ -1,11 +1,12 @@
 # gitignore format: https://git-scm.com/docs/gitignore
 
+# Environment Variables
+.env
+
+# Packages
+node_modules/
+
 # Outputs
 target/
 dist/
-
-# NPM
-node_modules/
-
-# Environment Variables
-.env
+megalinter-reports/
