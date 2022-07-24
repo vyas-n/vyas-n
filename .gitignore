@@ -1,3 +1,5 @@
+# gitignore format: https://git-scm.com/docs/gitignore
+
 # Outputs
 target/
 dist/
