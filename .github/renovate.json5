@@ -2,7 +2,6 @@
 {
   enabled: true,
   extends: ["config:base", ":semanticCommitType(build)"],
-  assignees: ["vyas-n"],
   semanticCommits: "enabled",
   dependencyDashboard: true,
   labels: ["dependencies"],
