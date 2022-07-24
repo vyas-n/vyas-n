@@ -3,3 +3,9 @@
 # Outputs
 target/
 dist/
+
+# NPM
+node_modules/
+
+# Environment Variables
+.env

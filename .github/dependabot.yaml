@@ -6,11 +6,11 @@ updates:
     directory: /
     schedule:
       interval: daily
-    assignees:
-      - vyas-n
   - package-ecosystem: cargo
     directory: /
     schedule:
       interval: daily
-    assignees:
-      - vyas-n
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily

@@ -52,7 +52,13 @@ jobs:
           version: "latest"
       - name: Run build
         run: |
-          earthly --allow-privileged +all
+          earthly +all
+      - name: Publish
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          earthly --push +publish
   tag:
     name: Tag
     if: github.event_name == 'push'
