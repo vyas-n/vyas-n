@@ -27,7 +27,7 @@ jobs:
           token: ${{ github.token }}
           fetch-depth: 0
       - name: MegaLinter
-        uses: oxsecurity/megalinter@v6.1.0
+        uses: oxsecurity/megalinter@v6.18.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload MegaLinter artifacts
