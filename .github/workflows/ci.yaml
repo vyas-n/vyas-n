@@ -22,7 +22,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.3.0
         with:
           token: ${{ github.token }}
           fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.3.0
       - name: Download latest earthly
         uses: earthly/actions-setup@v1.0.1
         with:
@@ -74,7 +74,7 @@ jobs:
       checks: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.3.0
         with:
           ref: main
       - name: Get Next Version # Will fail if no commits exist between main and last tag
