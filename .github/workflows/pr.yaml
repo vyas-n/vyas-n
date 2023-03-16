@@ -15,7 +15,7 @@ jobs:
       pull-requests: read
       contents: read
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.4.0
       - name: Check if PR Title is Conventional Commit
         uses: amannn/action-semantic-pull-request@v5.1.0
         env:
