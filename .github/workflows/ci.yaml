@@ -79,7 +79,7 @@ jobs:
           ref: main
       - name: Get Next Version # Will fail if no commits exist between main and last tag
         id: semver
-        uses: ietf-tools/semver-action@v1.4.0
+        uses: ietf-tools/semver-action@v1.5.1
         with: # Config based on https://www.conventionalcommits.org/en/v1.0.0/
           token: ${{ github.token }}
           branch: main

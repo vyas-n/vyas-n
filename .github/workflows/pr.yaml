@@ -22,7 +22,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Get Next Semantic Version
         id: semver
-        uses: ietf-tools/semver-action@v1.4.0
+        uses: ietf-tools/semver-action@v1.5.1
         with: # Config based on https://www.conventionalcommits.org/en/v1.0.0/
           token: ${{ github.token }}
           branch: ${{ github.head_ref }}
