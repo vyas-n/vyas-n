@@ -98,7 +98,7 @@ jobs:
           git diff --exit-code
       - name: Bump version and push tag
         id: bump
-        uses: anothrNick/github-tag-action@1.61.0
+        uses: anothrNick/github-tag-action@1.62.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
           CUSTOM_TAG: ${{ steps.semver.outputs.nextStrict }}
