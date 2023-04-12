@@ -33,7 +33,7 @@ jobs:
         run: |
           [[ $(docker run --rm -v "$PWD":/root ghcr.io/tomwright/dasel:alpine select -f Cargo.toml -s '.package.version') == "${{ steps.semver.outputs.nextStrict }}" ]]
       - name: Download latest earthly
-        uses: earthly/actions-setup@v1.0.1
+        uses: earthly/actions-setup@v1.0.7
         with:
           version: "latest"
       - name: Check if README.md is up-to-date
