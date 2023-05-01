@@ -4,7 +4,7 @@ VERSION 0.6
 
 deps:
     FROM docker.io/library/rust:alpine
-    RUN apk add --no-cache musl-dev
+    RUN apk add --no-cache musl-dev curl
     WORKDIR /root
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
