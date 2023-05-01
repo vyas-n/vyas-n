@@ -16,6 +16,11 @@ deps:
 all:
     BUILD +build
 
+build:
+    BUILD +docs
+    BUILD +build-site
+    BUILD +publish
+
 docs:
     FROM +deps
     ARG VERSION=$(dasel --file=Cargo.toml '.package.version')
