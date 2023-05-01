@@ -1,46 +1,28 @@
-use yew::prelude::*;
+use leptos::*;
 
-enum Msg {
-    AddOne,
-}
+#[component]
+pub fn SimpleCounter(cx: Scope, initial_value: i32) -> impl IntoView {
+    // create a reactive signal with the initial value
+    let (value, set_value) = create_signal(cx, initial_value);
 
-struct Model {
-    value: i64,
-}
+    // create event handlers for our buttons
+    // note that `value` and `set_value` are `Copy`, so it's super easy to move them into closures
+    let clear = move |_| set_value.set(0);
+    let decrement = move |_| set_value.update(|value| *value -= 1);
+    let increment = move |_| set_value.update(|value| *value += 1);
 
-impl Component for Model {
-    type Message = Msg;
-    type Properties = ();
-
-    fn create(_ctx: &Context<Self>) -> Self {
-        Self { value: 0 }
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            Msg::AddOne => {
-                self.value += 1;
-                // the value has changed so we need to
-                // re-render for it to appear on the page
-                true
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        // This gives us a component's "`Scope`" which allows us to send messages, etc to the component.
-        let link = ctx.link();
-        html! {
-            <section class="section">
-                <div class="content">
-                    <button class="button is-small" onclick={link.callback(|_| Msg::AddOne)}>{ "+1" }</button>
-                    <p>{ self.value }</p>
-                </div>
-            </section>
-        }
+    // create user interfaces with the declarative `view!` macro
+    view! { cx,
+        <div>
+            <button on:click=clear>"Clear"</button>
+            <button on:click=decrement>"-1"</button>
+            <span>"Value: " {value} "!"</span>
+            <button on:click=increment>"+1"</button>
+        </div>
     }
 }
 
-fn main() {
-    yew::Renderer::<Model>::new().render();
+// Easy to use with Trunk (trunkrs.dev) or with a simple wasm-bindgen setup
+pub fn main() {
+    mount_to_body(|cx| view! { cx,  <SimpleCounter initial_value=3 /> })
 }
