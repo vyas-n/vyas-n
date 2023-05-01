@@ -4,11 +4,12 @@ VERSION 0.6
 
 deps:
     FROM docker.io/library/rust:alpine
-    RUN apk add --no-cache musl-dev curl
+    RUN apk add --no-cache musl-dev curl wget
     WORKDIR /root
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
-    RUN cargo install trunk
+    ARG TRUNK_VERSION="v0.16.0"
+    RUN wget -qO- https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
 
 all:
     BUILD +build
@@ -18,6 +19,9 @@ docs:
     RUN curl -sSLf "$(curl -sSLf https://api.github.com/repos/tomwright/dasel/releases/latest | grep browser_download_url | grep linux_amd64 | grep -v .gz | cut -d\" -f 4)" -L -o dasel
     RUN chmod +x dasel
     RUN mv ./dasel /usr/local/bin/dasel
+    ARG VERSION=$(dasel --file=Cargo.toml '.package.version')
+    RUN dasel put -f Cargo.toml  -v "$VERSION" "package.version"
+    SAVE ARTIFACT Cargo.toml AS LOCAL Cargo.toml
 
 build:
     FROM +deps

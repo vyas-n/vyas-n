@@ -1,8 +1,11 @@
-# Cargo manifest: https://doc.rust-lang.org/cargo/reference/manifest.html
-[package]
-name = "vyas-n"
-version = "0.1.0"
-edition = "2021"
 
 [dependencies]
-yew = { version = "0.20.0", features = ["csr"] }
+
+[dependencies.yew]
+features = ["csr"]
+version = "0.20.0"
+
+[package]
+edition = "2021"
+name = "vyas-n"
+version = "0.1.0"
