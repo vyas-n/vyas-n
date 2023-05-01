@@ -2,18 +2,28 @@
 
 VERSION 0.6
 
-FROM docker.io/library/rust:alpine
-RUN apk add --no-cache musl-dev
-WORKDIR /root
-RUN rustup target add wasm32-unknown-unknown
-RUN rustup component add rustfmt
-RUN cargo install trunk
+deps:
+    FROM docker.io/library/rust:alpine
+    RUN apk add --no-cache musl-dev curl wget
+    WORKDIR /root
+    RUN rustup target add wasm32-unknown-unknown
+    RUN rustup component add rustfmt
+    RUN cargo install trunk
 
 all:
     BUILD +build
 
+docs:
+    FROM +deps
+    RUN curl -sSLf "$(curl -sSLf https://api.github.com/repos/tomwright/dasel/releases/latest | grep browser_download_url | grep linux_amd64 | grep -v .gz | cut -d\" -f 4)" -L -o dasel
+    RUN chmod +x dasel
+    RUN mv ./dasel /usr/local/bin/dasel
+    ARG VERSION=$(dasel --file=Cargo.toml '.package.version')
+    RUN dasel put -f Cargo.toml  -v "$VERSION" "package.version"
+    SAVE ARTIFACT Cargo.toml AS LOCAL Cargo.toml
+
 build:
-    FROM +base
+    FROM +deps
     COPY --dir src Cargo.lock Cargo.toml .
     RUN cargo build
     COPY index.html .
@@ -21,7 +31,7 @@ build:
     SAVE ARTIFACT ./dist
 
 fmt:
-    FROM +base
+    FROM +deps
     COPY --dir src Cargo.toml .
     RUN cargo fmt
     SAVE ARTIFACT src AS LOCAL src
