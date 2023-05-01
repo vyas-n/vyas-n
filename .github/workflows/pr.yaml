@@ -15,46 +15,7 @@ jobs:
       pull-requests: read
       contents: read
     steps:
-      - uses: actions/checkout@v3.3.0
       - name: Check if PR Title is Conventional Commit
-        uses: amannn/action-semantic-pull-request@v5.1.0
+        uses: amannn/action-semantic-pull-request@v5.2.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Get Next Semantic Version
-        id: semver
-        uses: ietf-tools/semver-action@v1.4.0
-        with: # Config based on https://www.conventionalcommits.org/en/v1.0.0/
-          token: ${{ github.token }}
-          branch: ${{ github.head_ref }}
-          patchList: fix, bugfix, perf, refactor, test, tests, build, chore, ci, docs, style, patch, bug, doc
-      - uses: chrisdickinson/setup-yq@v1.0.1
-      - name: Check if tag matches version in files
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        run: |
-          [[ $(docker run --rm -v "$PWD":/root ghcr.io/tomwright/dasel:alpine select -f Cargo.toml -s '.package.version') == "${{ steps.semver.outputs.nextStrict }}" ]]
-      - name: Download latest earthly
-        uses: earthly/actions-setup@v1.0.1
-        with:
-          version: "latest"
-      - name: Check if README.md is up-to-date
-        run: |
-          earthly +fmt
-          git diff --exit-code
-
-  automerge:
-    name: Automerge
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    container:
-      image: docker.io/library/alpine:latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - run: |
-          apk --no-cache add github-cli git
-      - name: Enable auto-merge for PRs
-        run: gh pr merge --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{github.token}}
