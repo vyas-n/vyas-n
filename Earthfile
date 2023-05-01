@@ -8,8 +8,7 @@ deps:
     WORKDIR /root
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
-    ARG TRUNK_VERSION="v0.16.0"
-    RUN wget -qO- https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
+    RUN cargo install trunk
 
 all:
     BUILD +build

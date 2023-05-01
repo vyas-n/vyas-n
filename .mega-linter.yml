@@ -1,13 +1,12 @@
 ---
-# MegaLinter Config: https://oxsecurity.github.io/megalinter/configuration/
-APPLY_FIXES: none
+# MegaLinter Config Ref: https://oxsecurity.github.io/megalinter/configuration/
+# General Settings
+SHOW_ELAPSED_TIME: true
+SARIF_REPORTER: true
+
+# Linter Enable/Disable
 DISABLE:
   - COPYPASTE
   - SPELL
-  # - REPOSITORY
-SHOW_ELAPSED_TIME: true
-FILEIO_REPORTER: false
-VALIDATE_ALL_CODEBASE: true
-SARIF_REPORTER: true
-DISABLE_ERRORS_LINTERS:
-  - REPOSITORY_TRIVY
+DISABLE_ERRORS_LINTERS: []
+# Tool Specific Config
