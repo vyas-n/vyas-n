@@ -4,7 +4,7 @@ VERSION 0.6
 
 deps:
     FROM DOCKERFILE -f dockerfiles/rust.Dockerfile .
-    RUN apk add --no-cache musl-dev curl wget
+    RUN apk add --no-cache musl-dev curl wget openssl-dev
     WORKDIR /root
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
@@ -41,6 +41,9 @@ builder:
 
 build-site:
     FROM DOCKERFILE -f dockerfiles/static-web-server.Dockerfile .
+    COPY +builder/dist /public
+
+    SAVE IMAGE vyas-n:local
 
 publish:
     FROM DOCKERFILE -f dockerfiles/node.Dockerfile .
