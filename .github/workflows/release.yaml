@@ -34,6 +34,10 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@v3.5.2
+      - name: Download latest earthly
+        uses: earthly/actions-setup@v1.0.7
+        with:
+          version: "latest"
       - run: |
           earthly +docs --VERSION="${{ needs.build.outputs.version }}"
       - name: Commit updated metadata files
