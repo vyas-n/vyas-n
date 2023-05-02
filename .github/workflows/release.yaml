@@ -34,7 +34,6 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@v3.5.2
-      - uses: BlueArchive/actions/cache-config@v0.3.2
       - run: |
           earthly +docs --VERSION="${{ needs.build.outputs.version }}"
       - name: Commit updated metadata files

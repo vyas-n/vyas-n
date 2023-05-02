@@ -1,9 +1,6 @@
 
 [dependencies]
-
-[dependencies.yew]
-features = ["csr"]
-version = "0.20.0"
+leptos = { version = "0.2.5", features = ["stable"] }
 
 [package]
 edition = "2021"
