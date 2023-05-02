@@ -23,6 +23,7 @@ build:
 
 docs:
     FROM +deps
+    COPY Cargo.toml .
     ARG VERSION=$(dasel --file=Cargo.toml '.package.version')
     RUN dasel put -f Cargo.toml  -v "$VERSION" "package.version"
     SAVE ARTIFACT Cargo.toml AS LOCAL Cargo.toml
