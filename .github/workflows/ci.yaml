@@ -36,7 +36,7 @@ jobs:
           retention-days: 1
       - name: Upload MegaLinter scan results to GitHub Security tab
         if: ${{ success() }} || ${{ failure() }}
-        uses: github/codeql-action/upload-sarif@v2.3.2
+        uses: github/codeql-action/upload-sarif@v2.3.3
         with:
           sarif_file: "megalinter-reports/megalinter-report.sarif"
 
