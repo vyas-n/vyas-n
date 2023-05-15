@@ -1,6 +1,6 @@
 
 [dependencies]
-leptos = { version = "0.2.5", features = ["stable"] }
+leptos = { version = "0.3.0", features = ["stable"] }
 
 [package]
 edition = "2021"
