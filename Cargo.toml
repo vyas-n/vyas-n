@@ -1,8 +1,9 @@
-
 [dependencies]
-leptos = { version = "0.3.0", features = ["stable"] }
+[dependencies.leptos]
+features = ['stable']
+version = '0.3.0'
 
 [package]
-edition = "2021"
-name = "vyas-n"
-version = "0.1.0"
+edition = '2021'
+name = 'vyas-n'
+version = '0.1.0'

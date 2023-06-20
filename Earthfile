@@ -1,6 +1,6 @@
 # Earthfile reference: https://docs.earthly.dev/docs/earthfile
 
-VERSION 0.6
+VERSION 0.7
 
 deps:
     FROM DOCKERFILE -f dockerfiles/rust.Dockerfile .
@@ -24,8 +24,8 @@ build:
 docs:
     FROM +deps
     COPY Cargo.toml .
-    ARG VERSION=$(dasel --file=Cargo.toml '.package.version')
-    RUN dasel put -f Cargo.toml  -v "$VERSION" "package.version"
+    ARG VERSION=$(dasel --file=Cargo.toml '.package.version' | sed "s/'//g")
+    RUN dasel put -f Cargo.toml -v $VERSION "package.version"
     SAVE ARTIFACT Cargo.toml AS LOCAL Cargo.toml
 
     COPY --dir src Cargo.toml .
