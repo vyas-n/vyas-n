@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.0.0
       - name: Download latest earthly
-        uses: earthly/actions-setup@v1.0.7
+        uses: earthly/actions-setup@v1.0.8
         with:
           version: "latest"
       - run: |
