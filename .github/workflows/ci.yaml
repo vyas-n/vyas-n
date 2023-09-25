@@ -22,7 +22,7 @@ jobs:
       checks: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
       - uses: oxsecurity/megalinter@v7.4.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -46,7 +46,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
       - name: Download latest earthly
         uses: earthly/actions-setup@v1.0.8
         with:
