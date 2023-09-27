@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "wrangler": "3.9.1"
+    "wrangler": "3.10.0"
   }
 }
