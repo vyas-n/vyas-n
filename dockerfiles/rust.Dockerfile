@@ -1,1 +1,1 @@
-FROM docker.io/library/rust:1.72.1-alpine3.17
+FROM docker.io/library/rust:1.73.0-alpine3.17
