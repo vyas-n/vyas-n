@@ -1,1 +1,1 @@
-FROM docker.io/library/node:21.0.0-alpine3.17
+FROM docker.io/library/node:21.1.0-alpine3.17
