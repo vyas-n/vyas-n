@@ -9,6 +9,7 @@ deps:
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
     RUN cargo install trunk
+    RUN cargo install cargo-chef
     RUN curl -sSLf "$(curl -sSLf https://api.github.com/repos/tomwright/dasel/releases/latest | grep browser_download_url | grep linux_amd64 | grep -v .gz | cut -d\" -f 4)" -L -o dasel
     RUN chmod +x dasel
     RUN mv ./dasel /usr/local/bin/dasel
