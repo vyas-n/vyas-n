@@ -1,5 +1,5 @@
 [dependencies]
-leptos_router = "0.5.2"
+leptos_router = { version = "0.5.2", features = ["csr"] }
 [dependencies.leptos]
 features = ['csr']
 version = '0.5.2'

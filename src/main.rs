@@ -33,13 +33,13 @@ fn About() -> impl IntoView {
 #[component]
 fn App() -> impl IntoView {
     view! {
-        // <Router>
+        <Router>
             <nav class="navbar" role="navigation" aria-label="main navigation">
                 <div class="navbar-menu">
                     <div class="navbar-start">
                         <a class="navbar-item" href="/">Home</a>
                         <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">
+                            <a class="navbar-link" href="/project">
                                 Projects
                             </a>
                             <div class="navbar-dropdown">
@@ -53,14 +53,13 @@ fn App() -> impl IntoView {
                 </div>
             </nav>
             <main>
-                // <About />
-                <Homepage initial_value=3 />
-                // <Routes>
-                //     <Route path="/" view=|| view! { <Homepage initial_value=3 /> } />
-                //     <Route path="/about" view=About />
-                // </Routes>
+                <Routes>
+                    <Route path="/" view=|| view! { <Homepage initial_value=3 /> } />
+                    <Route path="/about" view=About />
+                    <Route path="/*any" view=|| view! { <h1>"Not Found"</h1> }/>
+                </Routes>
             </main>
-        // </Router>
+        </Router>
     }
 }
 
