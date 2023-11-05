@@ -34,6 +34,8 @@ docs:
 
 builder:
     FROM +deps
+    COPY package.json package-lock.json .
+    RUN npm ci
     COPY --dir src Cargo.lock Cargo.toml .
     RUN cargo build
     COPY index.html .

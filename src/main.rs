@@ -1,5 +1,4 @@
 use leptos::*;
-use leptos_router::*;
 
 #[component]
 pub fn Homepage(initial_value: i32) -> impl IntoView {
@@ -32,12 +31,14 @@ pub fn Homepage(initial_value: i32) -> impl IntoView {
                 </div>
             </div>
         </nav>
-        <div>
-            <button on:click=clear>"Clear"</button>
-            <button on:click=decrement>"-1"</button>
-            <span>"Value: " {value} "!"</span>
-            <button on:click=increment>"+1"</button>
-        </div>
+        <main>
+            <div>
+                <button on:click=clear>"Clear"</button>
+                <button on:click=decrement>"-1"</button>
+                <span>"Value: " {value} </span>
+                <button on:click=increment>"+1"</button>
+            </div>
+        </main>
     }
 }
 
