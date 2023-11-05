@@ -1,7 +1,8 @@
 use leptos::*;
+use leptos_router::*;
 
 #[component]
-pub fn Homepage(initial_value: i32) -> impl IntoView {
+fn Homepage(initial_value: i32) -> impl IntoView {
     // create a reactive signal with the initial value
     let (value, set_value) = create_signal(initial_value);
 
@@ -13,36 +14,57 @@ pub fn Homepage(initial_value: i32) -> impl IntoView {
 
     // create user interfaces with the declarative `view!` macro
     view! {
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-menu">
-                <div class="navbar-start">
-                    <a class="navbar-item" >Home</a>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            Projects
-                        </a>
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                Arcade
+        <div>
+            <button on:click=clear>"Clear"</button>
+            <button on:click=decrement>"-1"</button>
+            <span>"Value: " {value} </span>
+            <button on:click=increment>"+1"</button>
+        </div>
+    }
+}
+
+#[component]
+fn About() -> impl IntoView {
+    view! {
+        <p>"This is the About Page."</p>
+    }
+}
+
+#[component]
+fn App() -> impl IntoView {
+    view! {
+        // <Router>
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="/">Home</a>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                Projects
                             </a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item">
+                                    Arcade
+                                </a>
+                            </div>
                         </div>
+                        <a class="navbar-item" href="/about">About</a>
                     </div>
-                    <a class="navbar-item" >About</a>
                 </div>
-            </div>
-        </nav>
-        <main>
-            <div>
-                <button on:click=clear>"Clear"</button>
-                <button on:click=decrement>"-1"</button>
-                <span>"Value: " {value} </span>
-                <button on:click=increment>"+1"</button>
-            </div>
-        </main>
+            </nav>
+            <main>
+                // <About />
+                <Homepage initial_value=3 />
+                // <Routes>
+                //     <Route path="/" view=|| view! { <Homepage initial_value=3 /> } />
+                //     <Route path="/about" view=About />
+                // </Routes>
+            </main>
+        // </Router>
     }
 }
 
 // Easy to use with Trunk (trunkrs.dev) or with a simple wasm-bindgen setup
-pub fn main() {
-    mount_to_body(|| view! { <Homepage initial_value=3 /> })
+fn main() {
+    mount_to_body(App)
 }
