@@ -4,7 +4,7 @@ VERSION 0.7
 
 deps:
     FROM DOCKERFILE -f dockerfiles/rust.Dockerfile .
-    RUN apk add --no-cache musl-dev curl wget openssl-dev
+    RUN apk add --no-cache musl-dev curl wget openssl-dev npm
     WORKDIR /root
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
