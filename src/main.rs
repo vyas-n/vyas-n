@@ -24,6 +24,13 @@ fn Homepage(initial_value: i32) -> impl IntoView {
 }
 
 #[component]
+fn Projects() -> impl IntoView {
+    view! {
+        <p>"This is the Projects Page."</p>
+    }
+}
+
+#[component]
 fn About() -> impl IntoView {
     view! {
         <p>"This is the About Page."</p>
@@ -39,7 +46,7 @@ fn App() -> impl IntoView {
                     <div class="navbar-start">
                         <a class="navbar-item" href="/">Home</a>
                         <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link" href="/project">
+                            <a class="navbar-link" href="/projects">
                                 Projects
                             </a>
                             <div class="navbar-dropdown">
@@ -55,7 +62,8 @@ fn App() -> impl IntoView {
             <main>
                 <Routes>
                     <Route path="/" view=|| view! { <Homepage initial_value=3 /> } />
-                    <Route path="/about" view=About />
+                    <Route path="/about" view=|| view! { <About /> } />
+                    <Route path="/projects" view=|| view! { <Projects /> } />
                     <Route path="/*any" view=|| view! { <h1>"Not Found"</h1> }/>
                 </Routes>
             </main>
