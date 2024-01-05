@@ -6,6 +6,7 @@ deps:
     FROM DOCKERFILE -f dockerfiles/rust.Dockerfile .
     RUN apk add --no-cache musl-dev curl wget openssl-dev npm
     WORKDIR /root
+    ARG RUSTFLAGS="-Ctarget-feature=-crt-static"
     RUN rustup target add wasm32-unknown-unknown
     RUN rustup component add rustfmt
     RUN cargo install trunk
@@ -36,6 +37,7 @@ docs:
 
 builder:
     FROM +deps
+    ARG RUSTFLAGS="-Ctarget-feature=-crt-static"
     COPY package.json package-lock.json .
     RUN npm ci
     COPY --dir src Cargo.lock Cargo.toml .
