@@ -566,9 +566,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "leptos"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c80d9f1e13c5d393e6ba11f2d7de784bf3192964800ecb26bf4bf53fcf1eeb82"
+checksum = "451cd0360beeaeadce642498aae975c5104ec7d241431db9360955f03c3e67d6"
 dependencies = [
  "cfg-if",
  "leptos_config",
@@ -586,9 +586,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_config"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60eddcf01df2b23397ccecde61f28e62924d27f2744a16b8af164840edd728cd"
+checksum = "2f1d21370a0747a2a8a66ac42ba871a7e5c9ac556a757f283d793520f7feec50"
 dependencies = [
  "config",
  "regex",
@@ -599,9 +599,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_dom"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b3bd9f76b4b109b3dbd09b3dee7be882d03efa41ee6326521c65199563cc40d"
+checksum = "5b0cc17bb9a07e9ede726787f5f55275b04615ad8e4f70ad30cdc7941f21433d"
 dependencies = [
  "async-recursion",
  "cfg-if",
@@ -629,9 +629,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_hot_reload"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cf7817917639f60b928df7319490a5faa11a6a5d604343e63728911d53167f8"
+checksum = "99b1fcbc5f08aafa96f9786e5738d9cd17d14737ce601a2a74a5a8409ede6eb7"
 dependencies = [
  "anyhow",
  "camino",
@@ -647,9 +647,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_macro"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e236a357a03219a8a36448eedd43750684e48bdbef035349e1b2126b4bfe0d63"
+checksum = "326bc53cec12bf935c7fd7d149a92db970d1373c4a157c6c354a501d13ee93bc"
 dependencies = [
  "attribute-derive",
  "cfg-if",
@@ -670,9 +670,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_reactive"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2c32bd5d151cbf7b061ec99c7f06ac7bea3bc6b31812fd4c02de4b580f47114"
+checksum = "aa49353fcd5f7716c15c4750893a7595969a13fcb0e5328f512930e7ca148e9b"
 dependencies = [
  "base64",
  "cfg-if",
@@ -721,9 +721,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_server"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e45262bcfeb4953528d8d705fae78943a9d95ea0c4e29f9578d8e38f53c49951"
+checksum = "b493d6b95232a1487128ed6c90d69c270d615e83914c8e99eb7c25993a27e507"
 dependencies = [
  "inventory",
  "lazy_static",
@@ -1199,9 +1199,9 @@ dependencies = [
 
 [[package]]
 name = "server_fn"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f62c98107db756a3675ec988f3e8fa4a6e9df166d344550ba27996c7cbf9cf68"
+checksum = "586930ff8011b83f751f1de8982c898458690232680bc73143587a962a5e9aec"
 dependencies = [
  "ciborium",
  "const_format",
@@ -1223,9 +1223,9 @@ dependencies = [
 
 [[package]]
 name = "server_fn_macro"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4c65f010871fc1371cb8114f3dd597e0c2c613c98b6ac9434ba1e0273a14e6f"
+checksum = "f1c8e4d65b66f7cc426bd6f71c952bf51c0d37db43ed458f5e19439211cb6a2f"
 dependencies = [
  "const_format",
  "proc-macro-error",
@@ -1238,9 +1238,9 @@ dependencies = [
 
 [[package]]
 name = "server_fn_macro_default"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fcb68bd2870297d3c7538a22aed7455cf2e4a76bf81695acf0ab439ecaf4c13a"
+checksum = "966c92bb4ced4fc0b3f0d89ad77ca8e6613fa99c5fdced7ae2d0ced8e2792523"
 dependencies = [
  "server_fn_macro",
  "syn 2.0.38",
