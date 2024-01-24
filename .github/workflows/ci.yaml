@@ -46,7 +46,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: earthly/actions-setup@v1.0.8
+      - uses: earthly/actions-setup@v1.0.9
         with:
           version: "latest"
       - name: Run build
