@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload MegaLinter artifacts
-        if: ${{ success() || failure() }}
+        if: always()
         uses: actions/upload-artifact@v4.3.1
         with:
           name: MegaLinter reports
@@ -35,7 +35,7 @@ jobs:
             megalinter-reports
           retention-days: 1
       - name: Upload MegaLinter scan results to GitHub Security tab
-        if: ${{ success() || failure() }}
+        if: always()
         uses: github/codeql-action/upload-sarif@v3.25.0
         with:
           sarif_file: "megalinter-reports/megalinter-report.sarif"
