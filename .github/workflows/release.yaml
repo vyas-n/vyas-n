@@ -57,7 +57,7 @@ jobs:
         with:
           token: ${{ github.token }}
       - name: Update Changelog
-        uses: stefanzweifel/changelog-updater-action@v1.10.0
+        uses: stefanzweifel/changelog-updater-action@v1.11.0
         with:
           latest-version: ${{ needs.build.outputs.version }}
           release-notes: ${{ steps.changelog.outputs.changes }}
