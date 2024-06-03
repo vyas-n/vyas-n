@@ -23,7 +23,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4.1.6
-      - uses: oxsecurity/megalinter@v7.11.1
+      - uses: oxsecurity/megalinter@v7.12.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload MegaLinter artifacts
