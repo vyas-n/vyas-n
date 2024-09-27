@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "bulma": "1.0.2",
-    "wrangler": "3.78.10"
+    "wrangler": "3.78.12"
   }
 }
