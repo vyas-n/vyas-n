@@ -1,1 +1,1 @@
-FROM docker.io/joseluisq/static-web-server:2.33.1
+FROM docker.io/joseluisq/static-web-server:2.34.0
