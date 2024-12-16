@@ -5,6 +5,7 @@
 
 # Packages
 node_modules/
+bazel-*
 
 # Outputs
 target/
