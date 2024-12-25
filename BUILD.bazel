@@ -1,0 +1,11 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+genrule(
+    name = "foo",
+    srcs = [],
+    outs = ["foo.txt"],
+    cmd = "sleep 5 && echo 'Hello World' > $@",
+)
+
+# gazelle:prefix github.com/example/project
+gazelle(name = "gazelle")
