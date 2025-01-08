@@ -2,6 +2,6 @@
 
 # Hi I'm Vyas 😄
 
-![Vyas's github stats](https://github-readme-stats.vercel.app/api?username=vyas-n&count_private=true&show_icons=true)
+![Vyas's GitHub Stats](https://github-readme-stats.vercel.app/api?username=vyas-n&show_icons=true&count_private=true&theme=transparent&rank_icon=github)
 
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=vyas-n&layout=compact)
