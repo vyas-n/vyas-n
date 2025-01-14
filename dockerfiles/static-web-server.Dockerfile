@@ -1,1 +1,1 @@
-FROM ghcr.io/static-web-server/static-web-server:2.34.0
+FROM ghcr.io/static-web-server/static-web-server:2.35.0
