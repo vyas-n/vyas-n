@@ -1,5 +1,5 @@
 ---
-# GitHub Actions syntax: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+# GitHub Actions Workflows Ref: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 name: CI
 "on":
   push:
@@ -10,12 +10,14 @@ name: CI
       - "**"
   workflow_dispatch:
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: ${{ github.event_name }}-${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-permissions: read-all
+permissions: {}
+defaults:
+  run:
+    shell: bash
 jobs:
-  lint:
-    name: Lint
+  Lint:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,26 +25,26 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: oxsecurity/megalinter/flavors/cupcake@v8.4.2
+      - uses: oxsecurity/megalinter@v8.4.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          SARIF_REPORTER: true
       - name: Upload MegaLinter artifacts
-        if: always()
+        if: always() && !cancelled()
         uses: actions/upload-artifact@v4.6.1
         with:
           name: MegaLinter reports
           path: |
             megalinter-reports
       - name: Upload MegaLinter scan results to GitHub Security tab
-        if: always()
+        if: always() && !cancelled()
         uses: github/codeql-action/upload-sarif@v3.28.12
         with:
           sarif_file: "megalinter-reports/megalinter-report.sarif"
-  build:
-    name: Build
+  Build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v4.2.2
       - uses: earthly/actions-setup@v1.0.13
