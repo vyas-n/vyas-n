@@ -21,7 +21,6 @@ all:
 
 build:
     BUILD +docs
-    BUILD +build-site
     BUILD +publish
 
 docs:
@@ -45,12 +44,6 @@ builder:
     COPY index.html .
     RUN trunk build --release
     SAVE ARTIFACT ./dist
-
-build-site:
-    FROM DOCKERFILE -f dockerfiles/static-web-server.Dockerfile .
-    COPY +builder/dist /public
-
-    SAVE IMAGE vyas-n:local
 
 publish:
     FROM DOCKERFILE -f dockerfiles/node.Dockerfile .
