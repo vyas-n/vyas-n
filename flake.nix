@@ -28,8 +28,7 @@
           pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
         # rustToolchainFor = p:
         #   p.rust-bin.stable.latest.default.override {
-        #     # Set the build targets supported by the toolchain,
-        #     # wasm32-unknown-unknown is required for trunk
+        #     
         #     targets = [ "wasm32-unknown-unknown" ];
         #   };
         craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
