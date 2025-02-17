@@ -14,7 +14,3 @@ updates:
     directory: /
     schedule:
       interval: daily
-  - package-ecosystem: docker
-    directory: /dockerfiles
-    schedule:
-      interval: daily
