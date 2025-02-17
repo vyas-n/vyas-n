@@ -47,15 +47,12 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: earthly/actions-setup@v1.0.13
-        with:
-          version: "latest"
       - name: Run build
         run: |
-          earthly +all
+          nix build
       - name: Publish
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          earthly --push --secret CLOUDFLARE_API_TOKEN="$CLOUDFLARE_API_TOKEN" --secret CLOUDFLARE_ACCOUNT_ID="$CLOUDFLARE_ACCOUNT_ID" +publish
+          ./deploy.nu "$CLOUDFLARE_ACCOUNT_ID" "$CLOUDFLARE_API_TOKEN"
