@@ -6,5 +6,5 @@
 def main [cloudflare_account_id: string, cloudflare_api_token: string] {
     let current_git_branch: string = (git branch --show-current)
 
-    CLOUDFLARE_ACCOUNT_ID=$cloudflare_account_id CLOUDFLARE_API_TOKEN=$cloudflare_api_token wrangler pages publish --project-name vyas-n --branch $current_git_branch ./dist
+    CLOUDFLARE_ACCOUNT_ID=$cloudflare_account_id CLOUDFLARE_API_TOKEN=$cloudflare_api_token wrangler pages deploy --project-name vyas-n --branch $current_git_branch ./result
 }
