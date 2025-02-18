@@ -2,6 +2,11 @@
   description = "Build a cargo project";
 
   inputs = {
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     crane.url = "github:ipetkov/crane";
@@ -24,13 +29,9 @@
 
         inherit (pkgs) lib;
 
+        # Use the toolchain from the `rust-toolchain.toml` file
         rustToolchain =
           pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-        # rustToolchainFor = p:
-        #   p.rust-bin.stable.latest.default.override {
-        #     
-        #     targets = [ "wasm32-unknown-unknown" ];
-        #   };
         craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
 
         # When filtering sources, we want to allow assets other than .rs files
@@ -51,7 +52,7 @@
         commonArgs = {
           inherit src;
           strictDeps = true;
-          # We must force the target, otherwise cargo will attempt to use your native target
+          # We must force the target for wasm builds, otherwise cargo will attempt to use your native target
           CARGO_BUILD_TARGET = "wasm32-unknown-unknown";
 
           buildInputs = [
