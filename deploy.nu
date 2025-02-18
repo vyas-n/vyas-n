@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i nu --pure
+#! nix-shell -i nu
 #! nix-shell -p nushell wrangler git cacert
 #! nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-24.11.tar.gz
 
