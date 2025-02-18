@@ -2,11 +2,6 @@
   description = "Build a cargo project";
 
   inputs = {
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
-
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     crane.url = "github:ipetkov/crane";
