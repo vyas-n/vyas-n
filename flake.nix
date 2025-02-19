@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.11";
 
+    flake-compat.url = "github:edolstra/flake-compat";
+
     crane.url = "github:ipetkov/crane";
 
     flake-utils.url = "github:numtide/flake-utils";
@@ -137,11 +139,13 @@
           # Inherit inputs from checks.
           checks = self.checks.${system};
 
+          shell = pkgs.nushell;
+
           # Additional dev-shell environment variables can be set directly
           # MY_CUSTOM_DEVELOPMENT_VAR = "something else";
 
           # Extra inputs can be added here; cargo and rustc are provided by default.
-          packages = [ pkgs.trunk ];
+          packages = with pkgs; [ trunk nushell nixfmt-classic ];
         };
       });
 }

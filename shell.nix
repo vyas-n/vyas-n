@@ -1,20 +1,13 @@
-let
-  nixpkgs = fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/tarball/nixpkgs-unstable";
-    sha256 = "sha256:0wv8d61mvmi334k45qlpilwr4s9h5x33yrgihl1hz9p7s3mnfbzi";
-  };
-  pkgs = import nixpkgs {
-    config = { };
-    overlays = [ ];
-  };
+# This uses flake-compat so that all the definitions can be in flake.nix and remain compatible with nix-stable commands
+# ref: https://github.com/edolstra/flake-compat
 
-in pkgs.mkShellNoCC {
-  packages = with pkgs; [ cowsay lolcat nushell nixfmt-classic npins ];
-  shell = pkgs.nushell;
-
-  GREETING = "Hello, Nix!";
-
-  shellHook = ''
-    echo $GREETING | cowsay | lolcat
-  '';
-}
+(import (let
+  lock = builtins.fromJSON (builtins.readFile ./flake.lock);
+  nodeName = lock.nodes.root.inputs.flake-compat;
+in fetchTarball {
+  url =
+    lock.nodes.${nodeName}.locked.url or "https://github.com/edolstra/flake-compat/archive/${
+      lock.nodes.${nodeName}.locked.rev
+    }.tar.gz";
+  sha256 = lock.nodes.${nodeName}.locked.narHash;
+}) { src = ./.; }).shellNix
