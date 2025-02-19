@@ -2,8 +2,8 @@
   description = "Build a cargo project";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     flake-compat.url = "github:edolstra/flake-compat";
 
@@ -13,27 +13,27 @@
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
-  outputs =
-    { self, nixpkgs, nixpkgs-old, crane, flake-utils, rust-overlay, ... }:
+  outputs = { self, nixpkgs-unstable, nixpkgs-stable, crane, flake-utils
+    , rust-overlay, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs {
+        pkgs-unstable = import nixpkgs-unstable { inherit system; };
+
+        pkgs-stable = import nixpkgs-stable {
           inherit system;
           overlays = [ (import rust-overlay) ];
         };
 
-        pkgs-old = import nixpkgs-old { inherit system; };
-
-        inherit (pkgs) lib;
+        inherit (pkgs-stable) lib;
 
         # Use the toolchain from the `rust-toolchain.toml` file
         rustToolchain =
-          pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-        craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
+          pkgs-stable.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+        craneLib = (crane.mkLib pkgs-stable).overrideToolchain rustToolchain;
 
         # When filtering sources, we want to allow assets other than .rs files
         unfilteredRoot = ./.; # The original, unfiltered source
@@ -58,9 +58,9 @@
 
           buildInputs = [
             # Add additional build inputs here
-          ] ++ lib.optionals pkgs.stdenv.isDarwin [
+          ] ++ lib.optionals pkgs-stable.stdenv.isDarwin [
             # Additional darwin specific inputs can be set here
-            pkgs.libiconv
+            pkgs-stable.libiconv
           ];
         };
 
@@ -81,15 +81,15 @@
           # then try to do a build, which will fail but will print out the correct value
           # for `hash`. Replace the value and then repeat the process but this time the
           # printed value will be for the second `hash` below
-          wasm-bindgen-cli = pkgs.buildWasmBindgenCli rec {
-            src = pkgs.fetchCrate {
+          wasm-bindgen-cli = pkgs-unstable.buildWasmBindgenCli rec {
+            src = pkgs-unstable.fetchCrate {
               pname = "wasm-bindgen-cli";
               version = "0.2.93";
               hash = "sha256-DDdu5mM3gneraM85pAepBXWn3TMofarVR4NbjMdz3r0=";
               # hash = lib.fakeHash;
             };
 
-            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+            cargoDeps = pkgs-stable.rustPlatform.fetchCargoVendor {
               inherit src;
               inherit (src) pname version;
               hash = "sha256-s8srI+lu+DgQ+5BbaEXC4Ja/BL+K22LIl5Gd1PwNZZk=";
@@ -97,6 +97,16 @@
             };
           };
         });
+
+        node-modules = pkgs-stable.buildNpmPackage {
+          pname = "personal-site";
+          version = "0.1.0";
+          src = ./.;
+          dontNpmBuild = true;
+          npmDeps = pkgs-stable.importNpmLock { npmRoot = ./.; };
+
+          npmConfigHook = pkgs-stable.importNpmLock.npmConfigHook;
+        };
 
       in {
         # Tests
@@ -121,16 +131,22 @@
 
         # Packages / Artifacts
         packages.default = personal-site;
+        packages.node-modules = node-modules;
 
         # Executable scripts
         apps.deploy = flake-utils.lib.mkApp {
-          drv = pkgs.writeShellScriptBin "deploy" ''
-            ${pkgs-old.wrangler}/bin/wrangler pages deploy --project-name=vyas-n --branch $GITHUB_REF_NAME ${personal-site}/
+          drv = pkgs-stable.writeShellScriptBin "deploy" ''
+            ${pkgs-stable.wrangler}/bin/wrangler pages deploy --project-name=vyas-n --branch $GITHUB_REF_NAME ${personal-site}/
           '';
         };
         apps.default = flake-utils.lib.mkApp {
-          drv = pkgs.writeShellScriptBin "serve-app" ''
-            ${pkgs.python3Minimal}/bin/python3 -m http.server --directory ${personal-site} 8000
+          drv = pkgs-stable.writeShellScriptBin "serve-app" ''
+            ${pkgs-stable.python3Minimal}/bin/python3 -m http.server --directory ${personal-site} 8000
+          '';
+        };
+        apps.debug = flake-utils.lib.mkApp {
+          drv = pkgs-stable.writeShellScriptBin "debug" ''
+            ls ${personal-site}
           '';
         };
 
@@ -139,13 +155,13 @@
           # Inherit inputs from checks.
           checks = self.checks.${system};
 
-          shell = pkgs.nushell;
+          shell = pkgs-stable.nushell;
 
           # Additional dev-shell environment variables can be set directly
           # MY_CUSTOM_DEVELOPMENT_VAR = "something else";
 
           # Extra inputs can be added here; cargo and rustc are provided by default.
-          packages = with pkgs; [ trunk nushell nixfmt-classic ];
+          packages = with pkgs-stable; [ trunk nushell nixfmt-classic ];
         };
       });
 }
