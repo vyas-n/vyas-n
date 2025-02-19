@@ -7,4 +7,5 @@ version = '0.6.15'
 [package]
 edition = '2021'
 name = 'vyas-n'
+description = "My personal website used to learn and test things."
 version = '0.1.0'

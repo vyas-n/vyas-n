@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     crane.url = "github:ipetkov/crane";
 
@@ -14,13 +15,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, crane, flake-utils, rust-overlay, ... }:
+  outputs =
+    { self, nixpkgs, nixpkgs-old, crane, flake-utils, rust-overlay, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ (import rust-overlay) ];
         };
+
+        pkgs-old = import nixpkgs-old { inherit system; };
 
         inherit (pkgs) lib;
 
@@ -68,7 +72,7 @@
         # Build the actual crate itself, reusing the dependency
         # artifacts from above.
         # This derivation is a directory you can put on a webserver.
-        my-app = craneLib.buildTrunkPackage (commonArgs // {
+        personal-site = craneLib.buildTrunkPackage (commonArgs // {
           inherit cargoArtifacts;
           # The version of wasm-bindgen-cli here must match the one from Cargo.lock.
           # When updating to a new version replace the hash values with lib.fakeHash,
@@ -92,15 +96,11 @@
           };
         });
 
-        # Quick example on how to serve the app,
-        # This is just an example, not useful for production environments
-        serve-app = pkgs.writeShellScriptBin "serve-app" ''
-          ${pkgs.python3Minimal}/bin/python3 -m http.server --directory ${my-app} 8000
-        '';
       in {
+        # Tests
         checks = {
           # Build the crate as part of `nix flake check` for convenience
-          inherit my-app;
+          inherit personal-site;
 
           # Run clippy (and deny all warnings) on the crate source,
           # again, reusing the dependency artifacts from above.
@@ -108,19 +108,31 @@
           # Note that this is done as a separate derivation so that
           # we can block the CI if there are issues here, but not
           # prevent downstream consumers from building our crate by itself.
-          my-app-clippy = craneLib.cargoClippy (commonArgs // {
+          personal-site-clippy = craneLib.cargoClippy (commonArgs // {
             inherit cargoArtifacts;
             cargoClippyExtraArgs = "--all-targets -- --deny warnings";
           });
 
           # Check formatting
-          my-app-fmt = craneLib.cargoFmt { inherit src; };
+          personal-site-fmt = craneLib.cargoFmt { inherit src; };
         };
 
-        packages.default = my-app;
+        # Packages / Artifacts
+        packages.default = personal-site;
 
-        apps.default = flake-utils.lib.mkApp { drv = serve-app; };
+        # Executable scripts
+        apps.deploy = flake-utils.lib.mkApp {
+          drv = pkgs.writeShellScriptBin "deploy" ''
+            ${pkgs-old.wrangler}/bin/wrangler pages deploy --project-name=vyas-n --branch $GITHUB_REF_NAME ${personal-site}/
+          '';
+        };
+        apps.default = flake-utils.lib.mkApp {
+          drv = pkgs.writeShellScriptBin "serve-app" ''
+            ${pkgs.python3Minimal}/bin/python3 -m http.server --directory ${personal-site} 8000
+          '';
+        };
 
+        # Development Environments
         devShells.default = craneLib.devShell {
           # Inherit inputs from checks.
           checks = self.checks.${system};
