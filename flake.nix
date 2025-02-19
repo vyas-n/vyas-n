@@ -98,15 +98,28 @@
           };
         });
 
+        fs = lib.fileset;
+
         node-modules = pkgs-stable.buildNpmPackage {
           pname = "personal-site";
           version = "0.1.0";
-          src = ./.;
+          src = fs.toSource {
+            root = ./.;
+            fileset = ./package.json;
+          };
           dontNpmBuild = true;
           npmDeps = pkgs-stable.importNpmLock { npmRoot = ./.; };
 
           npmConfigHook = pkgs-stable.importNpmLock.npmConfigHook;
         };
+
+        # bulma = nixpkgs-stable.stdenv.mkDerivation {
+        #   name = "bulma";
+        #   src = node-modules;
+        #   installPhase = ''
+        #     cp ${node-modules}/lib/node_modules/personal-site/node_modules/bulma/* $out/
+        #   '';
+        # };
 
       in {
         # Tests
@@ -132,6 +145,7 @@
         # Packages / Artifacts
         packages.default = personal-site;
         packages.node-modules = node-modules;
+        packages.bulma = node-modules;
 
         # Executable scripts
         apps.deploy = flake-utils.lib.mkApp {
@@ -146,8 +160,9 @@
         };
         apps.debug = flake-utils.lib.mkApp {
           drv = pkgs-stable.writeShellScriptBin "debug" ''
-            ls ${personal-site}
+            tree ${node-modules}
           '';
+          # packages = with pkgs-stable; [ tree ];
         };
 
         # Development Environments
@@ -160,8 +175,21 @@
           # Additional dev-shell environment variables can be set directly
           # MY_CUSTOM_DEVELOPMENT_VAR = "something else";
 
-          # Extra inputs can be added here; cargo and rustc are provided by default.
-          packages = with pkgs-stable; [ trunk nushell nixfmt-classic ];
+          # Extra inputs can be added here;
+          # - cargo and rustc are provided by default from craneLib.
+          # - This list of tools are intended for IDEs and dev shells
+          packages = with pkgs-stable; [
+            # IDE integrations
+            nil
+            nixfmt-classic
+            rust-analyzer
+            nodePackages.prettier
+
+            # Dev Tools
+            trunk
+            nushell
+            wrangler
+          ];
         };
       });
 }
