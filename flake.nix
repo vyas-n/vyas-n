@@ -1,5 +1,5 @@
 {
-  description = "Build a cargo project";
+  description = "My personal website used to learn and test things.";
 
   inputs = {
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -46,6 +46,8 @@
               (file: lib.any file.hasExt [ "html" "scss" ]) unfilteredRoot)
             # Example of a folder for images, icons, etc
             (lib.fileset.maybeMissing ./assets)
+            (lib.fileset.maybeMissing ./package.json)
+            (lib.fileset.maybeMissing ./package-lock.json)
           ];
         };
 
@@ -113,13 +115,15 @@
           npmConfigHook = pkgs-stable.importNpmLock.npmConfigHook;
         };
 
-        # bulma = nixpkgs-stable.stdenv.mkDerivation {
-        #   name = "bulma";
-        #   src = node-modules;
-        #   installPhase = ''
-        #     cp ${node-modules}/lib/node_modules/personal-site/node_modules/bulma/* $out/
-        #   '';
-        # };
+        bulma = pkgs-stable.stdenv.mkDerivation {
+          name = "bulma";
+          src = ./.;
+          buildInputs = [ node-modules ];
+          installPhase = ''
+            mkdir -p $out
+            cp -r ${node-modules}/lib/node_modules/personal-site/* $out
+          '';
+        };
 
       in {
         # Tests
@@ -145,7 +149,7 @@
         # Packages / Artifacts
         packages.default = personal-site;
         packages.node-modules = node-modules;
-        packages.bulma = node-modules;
+        packages.bulma = bulma;
 
         # Executable scripts
         apps.deploy = flake-utils.lib.mkApp {
@@ -155,14 +159,13 @@
         };
         apps.default = flake-utils.lib.mkApp {
           drv = pkgs-stable.writeShellScriptBin "serve-app" ''
-            ${pkgs-stable.python3Minimal}/bin/python3 -m http.server --directory ${personal-site} 8000
+            ${pkgs-stable.trunk}/bin/trunk serve ${personal-site}
           '';
         };
         apps.debug = flake-utils.lib.mkApp {
           drv = pkgs-stable.writeShellScriptBin "debug" ''
-            tree ${node-modules}
+            tree ${bulma}
           '';
-          # packages = with pkgs-stable; [ tree ];
         };
 
         # Development Environments
