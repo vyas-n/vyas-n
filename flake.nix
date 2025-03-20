@@ -49,6 +49,8 @@
             wrangler
             nodePackages.nodejs
           ];
+
+          RUST_SRC_PATH = rustToolchain.passthru.availableComponents.rust-src;
         };
       });
 }

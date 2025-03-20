@@ -7,14 +7,13 @@ name: PR
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-permissions: read-all
+permissions: {}
 jobs:
   pr:
     name: PR
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
-      contents: read
     steps:
       - name: Check if PR Title is Conventional Commit
         uses: amannn/action-semantic-pull-request@v5.5.3
