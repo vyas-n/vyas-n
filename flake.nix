@@ -41,7 +41,10 @@
       {
         # Development Environments
         devShells.default = craneLib.devShell {
-          shell = pkgs-stable.nushell;
+          # TODO: replace with nu shell once PWD error is fixed
+          shellHook = "
+            exec fish
+          ";
 
           # Extra inputs can be added here;
           # - cargo and rustc are provided by default from craneLib.
@@ -56,6 +59,7 @@
               # Dev Tools
               trunk
               nushell
+              fish
               wrangler
               nodePackages.nodejs
             ]
