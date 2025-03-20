@@ -1,0 +1,17 @@
+{
+  "nixEnvSelector.suggestion": false,
+  "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "nix.enableLanguageServer": true,
+  "nix.serverSettings": {
+    "nil": {
+      "formatting": { "command": ["nixfmt"] }
+    }
+  }
+}

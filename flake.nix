@@ -16,8 +16,17 @@
     };
   };
 
-  outputs = { self, nixpkgs-stable, crane, flake-utils, rust-overlay, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs-stable,
+      crane,
+      flake-utils,
+      rust-overlay,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs-stable = import nixpkgs-stable {
           inherit system;
@@ -25,32 +34,37 @@
         };
 
         # Use the toolchain from the `rust-toolchain.toml` file
-        rustToolchain =
-          pkgs-stable.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+        rustToolchain = pkgs-stable.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
         craneLib = (crane.mkLib pkgs-stable).overrideToolchain rustToolchain;
 
-      in {
+      in
+      {
         # Development Environments
         devShells.default = craneLib.devShell {
           shell = pkgs-stable.nushell;
 
           # Extra inputs can be added here;
           # - cargo and rustc are provided by default from craneLib.
-          packages = with pkgs-stable; [
-            # IDE integrations
-            nil
-            nixfmt-classic
-            rust-analyzer
-            nodePackages.prettier
+          packages =
+            with pkgs-stable;
+            [
+              # IDE integrations
+              nil
+              nixfmt-rfc-style
+              nodePackages.prettier
 
-            # Dev Tools
-            trunk
-            nushell
-            wrangler
-            nodePackages.nodejs
-          ];
+              # Dev Tools
+              trunk
+              nushell
+              wrangler
+              nodePackages.nodejs
+            ]
+            ++ [
+              rustToolchain.passthru.availableComponents.rust-analyzer
+            ];
 
           RUST_SRC_PATH = rustToolchain.passthru.availableComponents.rust-src;
         };
-      });
+      }
+    );
 }
