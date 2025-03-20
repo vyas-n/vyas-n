@@ -117,10 +117,11 @@
 
         bulma = pkgs-stable.stdenv.mkDerivation {
           name = "bulma";
-          src = ./.;
-          buildInputs = [ node-modules ];
+          src = src;
           installPhase = ''
             mkdir -p $out
+            cp -r ./* $out
+
             cp -r ${node-modules}/lib/node_modules/personal-site/* $out
           '';
         };
