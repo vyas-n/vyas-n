@@ -17,13 +17,12 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs-stable,
-      crane,
-      flake-utils,
-      rust-overlay,
-      ...
+    { self
+    , nixpkgs-stable
+    , crane
+    , flake-utils
+    , rust-overlay
+    , ...
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
