@@ -1,0 +1,7 @@
+[toolchain]
+channel = "1.84.1"
+components = ["rustfmt", "rustc-dev", "cargo", "clippy"]
+# Set the build targets supported by the toolchain,
+# wasm32-unknown-unknown is required for trunk
+targets = ["wasm32-unknown-unknown"]
+profile = "minimal"
