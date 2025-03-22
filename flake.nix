@@ -37,6 +37,9 @@
         craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
       in
       {
+        # Run Targets
+        apps.default = { type = "app"; program = "${pkgs.trunk}"; };
+
         # Build targets
         packages.default = pkgs.stdenv.mkDerivation {
           # Package info
