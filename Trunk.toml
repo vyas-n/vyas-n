@@ -1,0 +1,8 @@
+# Trunk build config
+# ref: https://trunkrs.dev/configuration
+
+[build]
+# Control minification: can be one of: never, on_release, always
+minify = "on_release"
+# The output dir for all final assets.
+dist = "dist"

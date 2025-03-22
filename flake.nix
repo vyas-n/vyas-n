@@ -27,17 +27,43 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs-stable = import nixpkgs-stable {
+        pkgs = import nixpkgs-stable {
           inherit system;
           overlays = [ (import rust-overlay) ];
         };
 
         # Use the toolchain from the `rust-toolchain.toml` file
-        rustToolchain = pkgs-stable.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-        craneLib = (crane.mkLib pkgs-stable).overrideToolchain rustToolchain;
-
+        rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+        craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
       in
       {
+        # Build targets
+        packages.default = pkgs.stdenv.mkDerivation {
+          # Package info
+          pname = "vyas-n-site";
+          version = "0.1.0";
+
+          # Build Tooling
+          buildInputs = with pkgs; [trunk cargo rustc nodePackages.nodejs cacert lld wasm-bindgen-cli];
+
+          # Environment Variables
+          RUST_SRC_PATH = rustToolchain.passthru.availableComponents.rust-src;
+          CARGO_HOME = "./.cargo-home";
+          HOME = "./.home";
+
+          # Build instructions
+          src = ./.;
+          buildPhase = ''
+            mkdir -p $CARGO_HOME $HOME
+            npm install
+            trunk build --verbose --release
+          '';
+          installPhase = ''
+            mkdir -p $out
+            cp ./dist/* $out/
+          '';
+        };
+
         # Development Environments
         devShells.default = craneLib.devShell {
           # TODO: replace with nu shell once PWD error is fixed
@@ -48,7 +74,7 @@
           # Extra inputs can be added here;
           # - cargo and rustc are provided by default from craneLib.
           packages =
-            with pkgs-stable;
+            with pkgs;
             [
               # IDE integrations
               nil
@@ -67,6 +93,7 @@
               rustToolchain.passthru.availableComponents.rust-analyzer
             ];
 
+          # Environment Variables
           RUST_SRC_PATH = rustToolchain.passthru.availableComponents.rust-src;
         };
       }
