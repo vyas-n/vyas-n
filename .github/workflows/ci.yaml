@@ -37,7 +37,7 @@ jobs:
             megalinter-reports
       - name: Upload MegaLinter scan results to GitHub Security tab
         if: always() && !cancelled()
-        uses: github/codeql-action/upload-sarif@v3.28.15
+        uses: github/codeql-action/upload-sarif@v3.28.16
         with:
           sarif_file: megalinter-reports/megalinter-report.sarif
   trunk_check:
