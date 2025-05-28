@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Trunk Code Quality
-        uses: trunk-io/trunk-action@v1.2.3
+        uses: trunk-io/trunk-action@v1.2.4
   BuildAndPublish:
     runs-on: ubuntu-latest
     permissions:
