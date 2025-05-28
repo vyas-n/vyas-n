@@ -69,11 +69,6 @@
 
         # Development Environments
         devShells.default = craneLib.devShell {
-          # TODO: replace with nu shell once PWD error is fixed
-          shellHook = "
-            exec fish
-          ";
-
           # Extra inputs can be added here;
           # - cargo and rustc are provided by default from craneLib.
           packages =
