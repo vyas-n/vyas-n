@@ -47,7 +47,7 @@
           version = "0.1.0";
 
           # Build Tooling
-          buildInputs = with pkgs; [trunk cargo rustc nodePackages.nodejs cacert lld wasm-bindgen-cli];
+          buildInputs = with pkgs; [ trunk cargo rustc nodePackages.nodejs cacert lld wasm-bindgen-cli ];
 
           # Environment Variables
           RUST_SRC_PATH = rustToolchain.passthru.availableComponents.rust-src;
