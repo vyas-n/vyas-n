@@ -77,4 +77,4 @@ jobs:
           nix build
       - name: Publish
         run: |
-          ./script/deploy.nu ${{ secrets.CLOUDFLARE_API_TOKEN }} ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          ./scripts/deploy.nu ${{ secrets.CLOUDFLARE_API_TOKEN }} ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
