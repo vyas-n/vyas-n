@@ -30,9 +30,7 @@ COPY .cargo ./.cargo
 
 RUN <<EOF
     mkdir -p ./src
-    cat <<EOL > ./src/main.rs
-    fn main() {}
-    EOL
+    echo "fn main() {}" > ./src/main.rs
 EOF
 
 RUN cargo bin --install
