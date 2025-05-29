@@ -58,6 +58,7 @@
           buildInputs = with pkgs; [ trunk cargo rustc nodePackages.nodejs cacert lld wasm-bindgen-cli ];
 
           # Environment Variables
+          RUSTFLAGS = "-Ctarget-feature=-crt-static";
           RUST_SRC_PATH = rustToolchain.passthru.availableComponents.rust-src;
           CARGO_HOME = "./.cargo-home";
           HOME = "./.home";
