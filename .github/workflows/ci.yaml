@@ -101,7 +101,9 @@ jobs:
   BuildAndPublish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      actions: read
+      contents: read
+      security-events: write
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4.2.2

@@ -1,10 +1,11 @@
-use leptos::*;
-use leptos_router::*;
+use leptos::prelude::*;
+use leptos_router::components::*;
+use leptos_router::path;
 
 #[component]
 fn Homepage(initial_value: i32) -> impl IntoView {
     // create a reactive signal with the initial value
-    let (value, set_value) = create_signal(initial_value);
+    let (value, set_value) = signal(initial_value);
 
     // create event handlers for our buttons
     // note that `value` and `set_value` are `Copy`, so it's super easy to move them into closures
@@ -75,36 +76,38 @@ fn About() -> impl IntoView {
 #[component]
 fn App() -> impl IntoView {
     view! {
-        <Router>
-            <nav class="navbar" role="navigation" aria-label="main navigation">
-                <div class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="/">Home</a>
-                        // TODO: add projects navbar-item
-                        // <div class="navbar-item has-dropdown is-hoverable">
-                        //     <a class="navbar-link" href="/projects">
-                        //         Projects
-                        //     </a>
-                        //     <div class="navbar-dropdown">
-                        //         <a class="navbar-item">
-                        //             Arcade
-                        //         </a>
-                        //     </div>
-                        // </div>
-                        <a class="navbar-item" href="/about">About</a>
+        <div id="root">
+            <Router>
+                <nav class="navbar" role="navigation" aria-label="main navigation">
+                    <div class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item" href="/">Home</a>
+                            // TODO: add projects navbar-item
+                            // <div class="navbar-item has-dropdown is-hoverable">
+                            //     <a class="navbar-link" href="/projects">
+                            //         Projects
+                            //     </a>
+                            //     <div class="navbar-dropdown">
+                            //         <a class="navbar-item">
+                            //             Arcade
+                            //         </a>
+                            //     </div>
+                            // </div>
+                            <a class="navbar-item" href="/about">About</a>
+                        </div>
                     </div>
-                </div>
-            </nav>
-            <main>
-                <Routes>
-                    <Route path="/" view=|| view! { <Homepage initial_value=3 /> } />
-                    <Route path="/about" view=|| view! { <About /> } />
-                    // TODO: add projects page
-                    // <Route path="/projects" view=|| view! { <Projects /> } />
-                    <Route path="/*any" view=|| view! { <h1>"Not Found"</h1> }/>
-                </Routes>
-            </main>
-        </Router>
+                </nav>
+                <main>
+                    <Routes fallback=|| "Not found.">
+                            <Route path=path!("/") view=move || view! { <Homepage initial_value=3 /> } />
+                            <Route path=path!("/about") view=move || view! { <About /> } />
+                            // TODO: add projects page
+                            // <Route path="/projects" view=move || view! { <Projects /> } />
+                            <Route path=path!("/*any") view=move || view! { <h1>"Not Found"</h1> }/>
+                    </Routes>
+                </main>
+            </Router>
+        </div>
     }
 }
 
