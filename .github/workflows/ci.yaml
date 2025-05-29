@@ -103,7 +103,7 @@ jobs:
       - uses: anchore/scan-action@v6
         id: scan
         with:
-          image: ${{ fromJSON(steps.docker_build.outputs.metadata).'image.name' }}
+          image: ${{ fromJSON(steps.docker_build.outputs.metadata).image.name }}
       - name: upload Anchore scan SARIF report
         uses: github/codeql-action/upload-sarif@v3
         with:
