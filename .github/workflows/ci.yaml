@@ -73,8 +73,13 @@ jobs:
           purge-last-accessed: 0
           # except any version with the key that is the same as the `primary-key`
           purge-primary-key: never
-      - run: |
+      - name: Build code
+        run: |
           nix build
+      - name: Check if run targets work
+        run: |
+          nix run .#wrangler -- --help
+          nix run .#trunk -- --help
       - name: Publish
         run: |
           ./scripts/deploy.nu ${{ secrets.CLOUDFLARE_API_TOKEN }} ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

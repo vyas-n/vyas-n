@@ -17,8 +17,7 @@
   };
 
   outputs =
-    {
-    nixpkgs-stable
+    { nixpkgs-stable
     , crane
     , flake-utils
     , rust-overlay
@@ -39,7 +38,7 @@
       in
       {
         # Run Targets
-        apps.default = {
+        apps.trunk = {
           type = "app";
           program = "${pkgs.trunk}/bin/trunk";
         };
@@ -51,7 +50,8 @@
         # Build targets
         packages.default = pkgs.stdenv.mkDerivation {
           # Package info
-          pname = "vyas-n-site";
+          # TODO: read this info from Cargo.toml
+          pname = "vyas-n";
           version = "0.1.0";
 
           # Build Tooling

@@ -20,9 +20,9 @@ fn Homepage(initial_value: i32) -> impl IntoView {
             </h1>
 
             <p>
-                "Hello! Welcome to my website!"
-                "There's not much to see here because I just use this site to experiment with different technologies."
-                "Feel free to visit my About page for links out to my official profiles."
+                "Hello! Welcome to my website!"<br/>
+                "There's not much to see here, I just use this website to try some rust programming."<br/>
+                "Feel free to visit my About page for more info about me."
             </p>
 
             <div class="column">
@@ -54,6 +54,8 @@ fn About() -> impl IntoView {
             <br/>
             <p class="subtitle">
                 "Hi! My name is Vyas and this is my website!"<br/>
+            </p>
+            <p>
                 "I know it's not much to look at, this is just a testing ground for me to practice learning new things."<br/><br/>
                 "If you're a recruiter looking at this page, please don't. 😅"<br/>
                 "Take a look at my online profiles instead:"
@@ -78,16 +80,17 @@ fn App() -> impl IntoView {
                 <div class="navbar-menu">
                     <div class="navbar-start">
                         <a class="navbar-item" href="/">Home</a>
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link" href="/projects">
-                                Projects
-                            </a>
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item">
-                                    Arcade
-                                </a>
-                            </div>
-                        </div>
+                        // TODO: add projects navbar-item
+                        // <div class="navbar-item has-dropdown is-hoverable">
+                        //     <a class="navbar-link" href="/projects">
+                        //         Projects
+                        //     </a>
+                        //     <div class="navbar-dropdown">
+                        //         <a class="navbar-item">
+                        //             Arcade
+                        //         </a>
+                        //     </div>
+                        // </div>
                         <a class="navbar-item" href="/about">About</a>
                     </div>
                 </div>
@@ -96,7 +99,8 @@ fn App() -> impl IntoView {
                 <Routes>
                     <Route path="/" view=|| view! { <Homepage initial_value=3 /> } />
                     <Route path="/about" view=|| view! { <About /> } />
-                    <Route path="/projects" view=|| view! { <Projects /> } />
+                    // TODO: add projects page
+                    // <Route path="/projects" view=|| view! { <Projects /> } />
                     <Route path="/*any" view=|| view! { <h1>"Not Found"</h1> }/>
                 </Routes>
             </main>
