@@ -1,0 +1,4 @@
+[alias]
+bin = ["run", "--package", "cargo-bin", "--"]
+chef = ["bin", "cargo-chef"]
+leptos = ["bin", "cargo-leptos"]

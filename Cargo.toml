@@ -3,6 +3,14 @@ edition = '2021'
 name = 'vyas-n'
 version = '0.1.0'
 
+[workspace]
+members = ["tools/cargo-bin"]
+
 [dependencies]
 leptos_router = { version = "0.8.2" }
 leptos = { version = '0.8.2', features = ['csr'] }
+
+[package.metadata.bin]
+cargo-leptos = { version = "0.2.35", locked = true }
+trunk = { version = "0.21.14", locked = true }
+cargo-chef = { version = "0.1.71", locked = true }

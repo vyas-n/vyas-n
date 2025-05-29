@@ -1,9 +1,65 @@
+# kics-scan disable=b16e8501-ef3c-44e1-a543-a093238099c9
+# Explaination, this rule is stupid. The `--platform` flag is a perfectly valid usecase.
 
-FROM docker.io/nixos/nix:2.29.0 AS builder
-RUN mkdir -p /root/src /root/src/.home /root/src/.cache /root/src/.cargo-home
+FROM --platform=$BUILDPLATFORM docker.io/library/node:24.1.0-bookworm-slim AS npm-builder
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+HEALTHCHECK NONE
+RUN mkdir -p /root/src
 WORKDIR /root/src
-COPY . ./
-RUN nix --extra-experimental-features "nix-command flakes" build
+COPY package* ./
+RUN npm install
 
-FROM ghcr.io/static-web-server/static-web-server:2.36.1
-COPY --from=builder /root/result /public
+# Note: the version of rust from the image doesn't matter,
+#   I just use this image because it has rustup pre-installed.
+#   Rustup will automatically pickup the version from rust-toolchain.toml.
+FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim-bookworm AS rust-builder
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+HEALTHCHECK NONE
+RUN mkdir -p /root/src
+WORKDIR /root/src
+COPY rust-toolchain.toml ./
+
+RUN <<EOF
+    cargo --version
+    rustc --version
+EOF
+
+COPY Cargo.toml .cargo ./
+COPY tools ./tools
+COPY .cargo ./.cargo
+
+RUN <<EOF
+    mkdir -p ./src
+    echo "fn main() {}" > ./src/main.rs
+    cargo bin --install
+EOF
+
+COPY Cargo.lock ./
+# TODO: Add cargo chef steps here
+COPY Trunk.toml index.html ./
+COPY src ./src
+COPY --from=npm-builder /root/src/node_modules ./node_modules
+RUN cargo bin trunk build --verbose --release
+
+FROM docker.io/joseluisq/static-web-server:2.36.0-debian
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+WORKDIR /
+
+RUN <<EOF
+    apt update
+    apt install curl -y
+    apt-get clean autoclean
+    apt-get autoremove --yes
+    rm -rf /var/lib/apt/lists/*
+
+    # Disable APT from being able to make any other changes
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+    # Create user
+    useradd --create-home --uid=1001 --shell=/bin/sh static-web-server
+EOF
+
+USER static-web-server
+COPY --from=rust-builder /root/src/dist /public
+CMD ["static-web-server", "--health"]
+HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/health || exit 1

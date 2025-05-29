@@ -55,7 +55,7 @@
           version = "0.1.0";
 
           # Build Tooling
-          buildInputs = with pkgs; [ trunk cargo rustc nodePackages.nodejs cacert lld wasm-bindgen-cli ];
+          buildInputs = with pkgs; [ cargo rustc nodePackages.nodejs cacert lld wasm-bindgen-cli ];
 
           # Environment Variables
           RUSTFLAGS = "-Ctarget-feature=-crt-static";
@@ -68,7 +68,7 @@
           buildPhase = ''
             mkdir -p $CARGO_HOME $HOME
             npm install
-            trunk build --verbose --release
+            cargo bin trunk build --verbose --release
           '';
           installPhase = ''
             mkdir -p $out
