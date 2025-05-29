@@ -1,10 +1,14 @@
 # gitignore format: https://git-scm.com/docs/gitignore
 
-# Environment Variables
+# Secrets
 .env
 
 # Packages
 node_modules/
+
+# Generated / Temp Files
+.DS_Store
+.direnv/
 
 # Outputs
 target/

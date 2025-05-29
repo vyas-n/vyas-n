@@ -2,6 +2,11 @@
   "recommendations": [
     "jnoortheen.nix-ide",
     "arrterian.nix-env-selector",
-    "trunk.io"
+    "trunk.io",
+    "tamasfe.even-better-toml",
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced",
+    "rust-lang.rust-analyzer",
+    "redhat.vscode-yaml"
   ]
 }
