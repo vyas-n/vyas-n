@@ -17,8 +17,8 @@
   };
 
   outputs =
-    { self
-    , nixpkgs-stable
+    {
+    nixpkgs-stable
     , crane
     , flake-utils
     , rust-overlay
@@ -42,6 +42,10 @@
         apps.default = {
           type = "app";
           program = "${pkgs.trunk}/bin/trunk";
+        };
+        apps.wrangler = {
+          type = "app";
+          program = "${pkgs.wrangler}/bin/wrangler";
         };
 
         # Build targets
