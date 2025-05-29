@@ -43,5 +43,8 @@ COPY src ./src
 COPY --from=npm-builder /root/src/node_modules ./node_modules
 RUN cargo bin trunk build --verbose --release
 
-FROM ghcr.io/static-web-server/static-web-server:2.36.1
+FROM docker.io/joseluisq/static-web-server:2.36.0-debian
+WORKDIR /
+RUN useradd --create-home --uid=1001 --shell=/bin/sh static-web-server
+USER static-web-server
 COPY --from=rust-builder /root/src/dist /public
