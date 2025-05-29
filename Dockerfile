@@ -42,7 +42,24 @@ COPY --from=npm-builder /root/src/node_modules ./node_modules
 RUN cargo bin trunk build --verbose --release
 
 FROM docker.io/joseluisq/static-web-server:2.36.0-debian
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /
-RUN useradd --create-home --uid=1001 --shell=/bin/sh static-web-server
+
+RUN <<EOF
+    apt update
+    apt install curl -y
+    apt-get clean autoclean
+    apt-get autoremove --yes
+    rm -rf /var/lib/apt/lists/*
+
+    # Disable APT from being able to make any other changes
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+    # Create user
+    useradd --create-home --uid=1001 --shell=/bin/sh static-web-server
+EOF
+
 USER static-web-server
 COPY --from=rust-builder /root/src/dist /public
+CMD ["static-web-server", "--health"]
+HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/health || exit 1
