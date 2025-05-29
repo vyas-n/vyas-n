@@ -29,6 +29,7 @@
       let
         pkgs = import nixpkgs-stable {
           inherit system;
+          config.allowUnfree = true;
           overlays = [ (import rust-overlay) ];
         };
 
@@ -38,7 +39,10 @@
       in
       {
         # Run Targets
-        apps.default = { type = "app"; program = "${pkgs.trunk}"; };
+        apps.default = {
+          type = "app";
+          program = "${pkgs.trunk}/bin/trunk";
+        };
 
         # Build targets
         packages.default = pkgs.stdenv.mkDerivation {

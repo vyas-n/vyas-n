@@ -20,7 +20,9 @@ fn Homepage(initial_value: i32) -> impl IntoView {
             </h1>
 
             <p>
-                "Not much to see here, this is a site I use to experiment with different technologies."
+                "Hello! Welcome to my website!"
+                "There's not much to see here because I just use this site to experiment with different technologies."
+                "Feel free to visit my About page for links out to my official profiles."
             </p>
 
             <div class="column">
