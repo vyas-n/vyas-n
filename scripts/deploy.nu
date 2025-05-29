@@ -6,5 +6,5 @@ def main [cloudflare_api_token: string, cloudflare_account_id: string] {
 
     nix build
 
-    env CLOUDFLARE_API_TOKEN=($cloudflare_api_token) CLOUDFLARE_ACCOUNT_ID=($cloudflare_account_id) nix run .#wrangler -- pages publish --project-name vyas-n --branch "$(git branch --show-current)" ./result
+    env CLOUDFLARE_API_TOKEN=($cloudflare_api_token) CLOUDFLARE_ACCOUNT_ID=($cloudflare_account_id) nix run .#wrangler -- pages publish --project-name vyas-n --branch $"(git branch --show-current)" ./result
 }
