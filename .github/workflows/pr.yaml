@@ -12,11 +12,11 @@ defaults:
   run:
     shell: bash
 jobs:
-  pr:
-    name: PR
+  PR:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
+    timeout-minutes: 5
     steps:
       - name: Check if PR Title is Conventional Commit
         uses: amannn/action-semantic-pull-request@v5.5.3
