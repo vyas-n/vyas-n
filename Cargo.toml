@@ -1,6 +1,5 @@
-cargo-features = ["edition2024"]
 [package]
-edition = '2024'
+edition = '2021'
 name = 'vyas-n'
 version = '0.1.0'
 
