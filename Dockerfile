@@ -31,9 +31,9 @@ COPY .cargo ./.cargo
 RUN <<EOF
     mkdir -p ./src
     echo "fn main() {}" > ./src/main.rs
+    cargo bin --install
 EOF
 
-RUN cargo bin --install
 COPY Cargo.lock ./
 # TODO: Add cargo chef steps here
 COPY Trunk.toml index.html ./
