@@ -60,12 +60,12 @@ fn About() -> impl IntoView {
                 "If you're a recruiter looking at this page, please don't. 😅"<br/>
                 "Take a look at my online profiles instead:"
             </p>
-            <ol type="I">
-                <li>
-                    <span>"LinkedIn: "<a href="https://www.linkedin.com/in/vyas-n/">"linkedin.com/in/vyas-n"</a></span>
+            <ol type="I" class="list">
+                <li class="list-item">
+                    <span >"LinkedIn: "<a href="https://www.linkedin.com/in/vyas-n/">"linkedin.com/in/vyas-n"</a></span>
                 </li>
-                <li>
-                    <span>"GitHub: "<a href="https://github.com/vyas-n">"github.com/vyas-n"</a></span>
+                <li class="list-item">
+                    <span >"GitHub: "<a href="https://github.com/vyas-n">"github.com/vyas-n"</a></span>
                 </li>
             </ol>
         </div>
