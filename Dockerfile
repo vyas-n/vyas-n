@@ -17,13 +17,16 @@ HEALTHCHECK NONE
 RUN mkdir -p /root/src
 WORKDIR /root/src
 COPY rust-toolchain.toml ./
+
 RUN <<EOF
     cargo --version
     rustc --version
 EOF
+
 COPY Cargo.toml .cargo ./
 COPY tools ./tools
 COPY .cargo ./.cargo
+
 RUN <<EOF
     mkdir -p ./src
     cat <<EOL > ./src/main.rs
@@ -32,7 +35,9 @@ RUN <<EOF
 EOF
 
 RUN cargo bin --install
-COPY Cargo.lock Trunk.toml index.html ./
+COPY Cargo.lock ./
+# TODO: Add cargo chef steps here
+COPY Trunk.toml index.html ./
 COPY src ./src
 COPY --from=npm-builder /root/src/node_modules ./node_modules
 RUN cargo bin trunk build --verbose --release
