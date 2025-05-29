@@ -5,6 +5,7 @@
 
 # Packages
 node_modules/
+.bin/
 
 # Generated / Temp Files
 .DS_Store
