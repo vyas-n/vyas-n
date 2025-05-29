@@ -1,5 +1,5 @@
 [package]
-edition = '2021'
+edition = '2024'
 name = 'vyas-n'
 version = '0.1.0'
 
@@ -12,3 +12,5 @@ leptos = { version = '0.8.2', features = ['csr'] }
 
 [package.metadata.bin]
 cargo-leptos = { version = "0.2.35", locked = true }
+trunk = { version = "0.21.14", locked = true }
+cargo-chef = { version = "0.1.71", locked = true }
