@@ -23,6 +23,7 @@ jobs:
       contents: write
       checks: write
       pull-requests: write
+      security-events: write
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4.2.2
@@ -46,6 +47,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      security-events: write
     timeout-minutes: 30
     outputs:
       version: ${{ steps.semver.outputs.version }}
@@ -113,7 +115,6 @@ jobs:
     permissions:
       actions: read
       contents: read
-      security-events: write
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4.2.2
