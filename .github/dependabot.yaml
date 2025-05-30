@@ -7,11 +7,14 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: cargo
-    directory: /
+    directories:
+      - /
+      - tools/cargo-bin
     schedule:
       interval: daily
   - package-ecosystem: npm
-    directory: /
+    directories:
+      - styles
     schedule:
       interval: daily
   - package-ecosystem: docker
