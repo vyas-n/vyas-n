@@ -48,7 +48,7 @@ WORKDIR /
 
 RUN <<EOF
     # Create user
-    useradd --create-home --uid=1001 --shell=/bin/sh static-web-server
+    useradd --create-home --uid=1001 --gid=1001 --shell=/bin/sh static-web-server
 EOF
 
 USER static-web-server
