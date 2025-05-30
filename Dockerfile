@@ -47,7 +47,8 @@ HEALTHCHECK NONE
 WORKDIR /
 
 RUN <<EOF
-    # Create user
+    # Create group & user
+    groupadd --gid=1001 static-web-server
     useradd --create-home --uid=1001 --gid=1001 --shell=/bin/sh static-web-server
 EOF
 
