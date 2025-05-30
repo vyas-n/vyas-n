@@ -1,4 +1,6 @@
+# ref: https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file
 [toolchain]
+# Rust releases: https://releases.rs
 channel = "1.87.0"
 components = ["rust-src", "rustfmt", "rustc-dev", "cargo", "clippy"]
 # Set the build targets supported by the toolchain,
