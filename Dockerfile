@@ -6,8 +6,10 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 RUN mkdir -p /root/src
 WORKDIR /root/src
-COPY package* ./
+COPY styles/package* ./styles/
+WORKDIR /root/src/styles
 RUN npm install
+WORKDIR /root/src
 
 # Note: the version of rust from the image doesn't matter,
 #   I just use this image because it has rustup pre-installed.
