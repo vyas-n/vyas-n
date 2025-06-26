@@ -67,7 +67,9 @@
           src = ./.;
           buildPhase = ''
             mkdir -p $CARGO_HOME $HOME
+            cd styles
             npm install
+            cd ..
             cargo bin trunk build --verbose --release
           '';
           installPhase = ''
@@ -95,6 +97,7 @@
               fish
               wrangler
               nodePackages.nodejs
+              k3d
             ]
             ++ [
               rustToolchain.passthru.availableComponents.rust-analyzer

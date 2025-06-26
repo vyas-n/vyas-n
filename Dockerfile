@@ -6,13 +6,15 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 RUN mkdir -p /root/src
 WORKDIR /root/src
-COPY package* ./
+COPY styles/package* ./styles/
+WORKDIR /root/src/styles
 RUN npm install
+WORKDIR /root/src
 
 # Note: the version of rust from the image doesn't matter,
 #   I just use this image because it has rustup pre-installed.
 #   Rustup will automatically pickup the version from rust-toolchain.toml.
-FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.87.0-slim-bookworm AS rust-builder
+FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.87.0-slim-bookworm AS rust-tooling
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 RUN mkdir -p /root/src
@@ -34,11 +36,23 @@ RUN <<EOF
     cargo bin --install
 EOF
 
+FROM --platform=$BUILDPLATFORM rust-tooling AS planner
+# We only pay the installation cost once,
+# it will be cached from the second build onwards
+RUN mkdir -p /app
+WORKDIR /app
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM --platform=$BUILDPLATFORM rust-tooling AS rust-builder
 COPY Cargo.lock ./
-# TODO: Add cargo chef steps here
+COPY --from=planner /app/recipe.json recipe.json
+# Build dependencies - this is the caching Docker layer!
+RUN cargo chef cook --release --recipe-path recipe.json
+
 COPY Trunk.toml index.html ./
 COPY src ./src
-COPY --from=npm-builder /root/src/node_modules ./node_modules
+COPY --from=npm-builder /root/src/styles/node_modules ./styles/node_modules
 RUN cargo bin trunk build --verbose --release
 
 FROM docker.io/joseluisq/static-web-server:2.37.0-debian
