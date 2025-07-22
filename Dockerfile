@@ -41,7 +41,7 @@ COPY src ./src
 COPY --from=npm-builder /root/src/node_modules ./node_modules
 RUN cargo bin trunk build --verbose --release
 
-FROM docker.io/joseluisq/static-web-server:2.37.0-debian
+FROM docker.io/joseluisq/static-web-server:2.38.0-debian
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 WORKDIR /
