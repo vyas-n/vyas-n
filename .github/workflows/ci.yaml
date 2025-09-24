@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - uses: oxsecurity/megalinter/flavors/cupcake@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 # v8.8.0
+      - uses: oxsecurity/megalinter/flavors/cupcake@0dcbedd66ea456ba2d54fd350affaa15df8a0da3 # v9.0.1
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload MegaLinter artifacts
