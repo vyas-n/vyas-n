@@ -72,7 +72,7 @@ jobs:
           branch: ${{ github.event.repository.default_branch }} # TODO: fix so that this works for cron
           # Config based on https://www.conventionalcommits.org/en/v1.0.0/
           patchList: fix, bugfix, perf, refactor, test, tests, build, chore, ci, docs, style, patch, bug
-      - uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+      - uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
         id: meta
         with:
           images: |
