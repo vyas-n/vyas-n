@@ -12,7 +12,7 @@ RUN npm install
 # Note: the version of rust from the image doesn't matter,
 #   I just use this image because it has rustup pre-installed.
 #   Rustup will automatically pickup the version from rust-toolchain.toml.
-FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim-bookworm AS rust-builder
+FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.91.1-slim-bookworm AS rust-builder
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 RUN mkdir -p /root/src
