@@ -1,7 +1,7 @@
 # kics-scan disable=b16e8501-ef3c-44e1-a543-a093238099c9
 # Explaination, this rule is stupid. The `--platform` flag is a perfectly valid usecase.
 
-FROM --platform=$BUILDPLATFORM docker.io/library/node:25.0.0-bookworm-slim AS npm-builder
+FROM --platform=$BUILDPLATFORM docker.io/library/node:25.2.0-bookworm-slim AS npm-builder
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 RUN mkdir -p /root/src
