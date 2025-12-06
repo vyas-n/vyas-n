@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "bulma": "1.0.4"
+  },
+  "devDependencies": {
+    "wrangler": "^4.53.0"
   }
 }
