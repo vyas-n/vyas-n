@@ -15,10 +15,12 @@ updates:
 
   - package-ecosystem: rust-toolchain
     directory: /
-    patterns: ["*"]
-    multi-ecosystem-group: all-packages
+    schedule:
+      interval: "weekly"
   - package-ecosystem: cargo
-    directory: /
+    directories:
+      - /
+      - tools/cargo-bin/
     patterns: ["*"]
     multi-ecosystem-group: all-packages
 

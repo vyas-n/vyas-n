@@ -2,7 +2,7 @@
   description = "My personal website used to learn and test things.";
 
   inputs = {
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     flake-compat.url = "github:edolstra/flake-compat";
 
