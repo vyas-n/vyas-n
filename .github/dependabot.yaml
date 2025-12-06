@@ -15,8 +15,8 @@ updates:
 
   - package-ecosystem: rust-toolchain
     directory: /
-    schedule:
-      interval: "weekly"
+    patterns: ["*"]
+    multi-ecosystem-group: all-packages
   - package-ecosystem: cargo
     directories:
       - /
