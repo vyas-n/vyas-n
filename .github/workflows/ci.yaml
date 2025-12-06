@@ -26,20 +26,20 @@ jobs:
       security-events: write
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - uses: oxsecurity/megalinter/flavors/cupcake@62c799d895af9bcbca5eacfebca29d527f125a57 # v9.1.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: oxsecurity/megalinter/flavors/cupcake@55a59b24a441e0e1943080d4a512d827710d4a9d # v9.2.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload MegaLinter artifacts
         if: always() && !cancelled()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: MegaLinter reports
           path: |
             megalinter-reports
       - name: Upload MegaLinter scan results to GitHub Security tab
         if: always() && !cancelled()
-        uses: github/codeql-action/upload-sarif@16140ae1a102900babc80a33c44059580f687047 # v3.29.5
+        uses: github/codeql-action/upload-sarif@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v3.29.5
         with:
           sarif_file: megalinter-reports/megalinter-report.sarif
   BuildContainer:
@@ -58,13 +58,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
       - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
         with:
           cleanup: false
       - name: Get Next Version
         id: semver
-        uses: ietf-tools/semver-action@000ddb2ebacad350ff2a15382a344dc05ea4c0a4 # v1.10.2
+        uses: ietf-tools/semver-action@c90370b2958652d71c06a3484129a4d423a6d8a8 # v1.11.0
         # TODO: convert this for push events on tag
         if: false
         with:
@@ -72,7 +72,7 @@ jobs:
           branch: ${{ github.event.repository.default_branch }} # TODO: fix so that this works for cron
           # Config based on https://www.conventionalcommits.org/en/v1.0.0/
           patchList: fix, bugfix, perf, refactor, test, tests, build, chore, ci, docs, style, patch, bug
-      - uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+      - uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         id: meta
         with:
           images: |
@@ -101,13 +101,13 @@ jobs:
           sbom: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - uses: anchore/scan-action@a5605eb0943e46279cb4fbd9d44297355d3520ab # v7.0.2
+      - uses: anchore/scan-action@40a61b52209e9d50e87917c5b901783d546b12d0 # v7.2.1
         id: scan
         with:
           image: ${{ fromJSON(steps.docker_build.outputs.metadata).image.name }}
           cache-db: true
       - name: upload Anchore scan SARIF report
-        uses: github/codeql-action/upload-sarif@16140ae1a102900babc80a33c44059580f687047 # v3.29.5
+        uses: github/codeql-action/upload-sarif@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v3.29.5
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
   BuildAndPublish:
@@ -117,7 +117,7 @@ jobs:
       contents: read
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1.15.2
       - name: Build code
         run: |
@@ -160,7 +160,7 @@ jobs:
         # If you are analyzing a compiled language, you can modify the 'build-mode' for that language to customize how
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       # Add any setup steps before running the `github/codeql-action/init` action.
       # This includes steps like installing compilers or runtimes (`actions/setup-node`
@@ -169,7 +169,7 @@ jobs:
       #   uses: actions/setup-example@v1
 
       # Initializes the CodeQL tools for scanning.
-      - uses: github/codeql-action/init@16140ae1a102900babc80a33c44059580f687047 # v3.29.5
+      - uses: github/codeql-action/init@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v3.29.5
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
@@ -197,7 +197,7 @@ jobs:
           exit 1
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@16140ae1a102900babc80a33c44059580f687047 # v3.29.5
+        uses: github/codeql-action/analyze@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v3.29.5
         with:
           category: "/language:${{matrix.language}}"
 
@@ -208,8 +208,8 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
       - name: Run zizmor 🌈
-        uses: zizmorcore/zizmor-action@e673c3917a1aef3c65c972347ed84ccd013ecda4 # v0.2.0
+        uses: zizmorcore/zizmor-action@e639db99335bc9038abc0e066dfcd72e23d26fb4 # v0.3.0
