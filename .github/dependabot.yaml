@@ -1,20 +1,35 @@
 ---
 # https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
 version: 2
+
+multi-ecosystem-groups:
+  all-packages:
+    schedule:
+      interval: "weekly"
+
 updates:
   - package-ecosystem: github-actions
     directory: /
-    schedule:
-      interval: daily
-  - package-ecosystem: cargo
+    patterns: ["*"]
+    multi-ecosystem-group: all-packages
+
+  - package-ecosystem: rust-toolchain
     directory: /
-    schedule:
-      interval: daily
+    patterns: ["*"]
+    multi-ecosystem-group: all-packages
+  - package-ecosystem: cargo
+    directories:
+      - /
+      - tools/cargo-bin/
+    patterns: ["*"]
+    multi-ecosystem-group: all-packages
+
   - package-ecosystem: npm
     directory: /
-    schedule:
-      interval: daily
+    patterns: ["*"]
+    multi-ecosystem-group: all-packages
+
   - package-ecosystem: docker
     directory: /
-    schedule:
-      interval: daily
+    patterns: ["*"]
+    multi-ecosystem-group: all-packages

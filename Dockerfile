@@ -39,13 +39,17 @@ COPY Cargo.lock ./
 COPY Trunk.toml index.html ./
 COPY src ./src
 COPY --from=npm-builder /root/src/node_modules ./node_modules
-RUN cargo bin trunk build --verbose --release
+RUN --mount=type=cache,target=/root/src/target/ \
+    --mount=type=cache,target=/usr/local/cargo/git/db \
+    --mount=type=cache,target=/usr/local/cargo/registry/ \
+    cargo bin trunk build --verbose --release
 
 FROM docker.io/joseluisq/static-web-server:2.38.1-debian
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 WORKDIR /
 
+USER root
 RUN <<EOF
     # Create group & user
     groupadd --gid=1001 static-web-server

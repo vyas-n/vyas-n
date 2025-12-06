@@ -1,0 +1,16 @@
+[tools]
+# Core tools
+node = "latest"
+usage = "latest"
+bun = "latest"
+
+# Packages
+## NPM
+"npm:prettier" = "latest"
+
+## Cargo
+# "cargo:trunk" = "latest"
+
+[settings]
+experimental = true
+npm.bun = true
