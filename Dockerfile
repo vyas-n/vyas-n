@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/root/src/target/ \
     --mount=type=cache,target=/usr/local/cargo/registry/ \
     cargo bin trunk build --verbose --release
 
-FROM docker.io/joseluisq/static-web-server:2.40.0-debian
+FROM docker.io/joseluisq/static-web-server:2.40.1-debian
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 WORKDIR /

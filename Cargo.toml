@@ -7,7 +7,7 @@ version = '0.1.0'
 members = ["tools/cargo-bin"]
 
 [dependencies]
-leptos_router = { version = "0.8.3" }
+leptos_router = { version = "0.8.10" }
 leptos = { version = '0.8.3', features = ['csr'] }
 
 [package.metadata.bin]
