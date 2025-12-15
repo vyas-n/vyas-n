@@ -41,7 +41,7 @@ jobs:
             megalinter-reports
       - name: Upload MegaLinter scan results to GitHub Security tab
         if: always() && !cancelled()
-        uses: github/codeql-action/upload-sarif@1b168cd39490f61582a9beae412bb7057a6b2c4e # v3.29.5
+        uses: github/codeql-action/upload-sarif@1b168cd39490f61582a9beae412bb7057a6b2c4e # v4.31.8
         with:
           sarif_file: megalinter-reports/megalinter-report.sarif
   BuildContainer:
@@ -131,8 +131,9 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CUSTOM_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
-          npx wrangler pages deploy --project-name vyas-n --branch ${{ github.head_ref || github.ref_name }} ./dist
+          npx wrangler pages deploy --project-name vyas-n --branch "${CUSTOM_BRANCH_NAME}" ./dist
   CodeQLAnalyze:
     name: CodeQL Analyze (${{ matrix.language }})
     # Runner size impacts CodeQL analysis time. To learn more, please see:
