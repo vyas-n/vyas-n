@@ -6,6 +6,9 @@ multi-ecosystem-groups:
   all-packages:
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: build
+      include: scope
 
 updates:
   - package-ecosystem: github-actions

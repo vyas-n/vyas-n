@@ -128,7 +128,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          npx wrangler pages publish --project-name vyas-n --branch "$(git branch --show-current)" ./dist
+          npx wrangler pages deploy --project-name vyas-n --branch "$(git branch --show-current)" ./dist
   CodeQLAnalyze:
     name: CodeQL Analyze (${{ matrix.language }})
     # Runner size impacts CodeQL analysis time. To learn more, please see:
