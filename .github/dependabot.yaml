@@ -5,7 +5,7 @@ version: 2
 multi-ecosystem-groups:
   all-packages:
     schedule:
-      interval: "weekly"
+      interval: weekly
     commit-message:
       prefix: build
       include: scope
@@ -15,24 +15,44 @@ updates:
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-packages
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: rust-toolchain
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-packages
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
   - package-ecosystem: cargo
     directories:
       - /
       - tools/cargo-bin/
     patterns: ["*"]
     multi-ecosystem-group: all-packages
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: npm
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-packages
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: docker
     directory: /
     patterns: ["*"]
     multi-ecosystem-group: all-packages
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
