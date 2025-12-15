@@ -12,7 +12,7 @@ RUN npm install
 # Note: the version of rust from the image doesn't matter,
 #   I just use this image because it has rustup pre-installed.
 #   Rustup will automatically pickup the version from rust-toolchain.toml.
-FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.91.1-slim-bookworm AS rust-builder
+FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.92.0-slim-bookworm AS rust-builder
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 RUN mkdir -p /root/src
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/root/src/target/ \
     --mount=type=cache,target=/usr/local/cargo/registry/ \
     cargo bin trunk build --verbose --release
 
-FROM docker.io/joseluisq/static-web-server:2.40.0-debian
+FROM docker.io/joseluisq/static-web-server:2.40.1-debian
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 HEALTHCHECK NONE
 WORKDIR /
