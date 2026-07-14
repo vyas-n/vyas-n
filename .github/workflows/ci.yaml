@@ -103,7 +103,7 @@ jobs:
           sbom: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - uses: anchore/scan-action@3c9a191a0fbab285ca6b8530b5de5a642cba332f # v7.2.2
+      - uses: anchore/scan-action@7037fa011853d5a11690026fb85feee79f4c946c # v7.3.2
         id: scan
         with:
           image: ${{ fromJSON(steps.docker_build.outputs.metadata).image.name }}
@@ -219,4 +219,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Run zizmor 🌈
-        uses: zizmorcore/zizmor-action@135698455da5c3b3e55f73f4419e481ab68cdd95 # v0.4.1
+        uses: zizmorcore/zizmor-action@0dce2577a4760a2749d8cfb7a84b7d5585ebcb7d # v0.5.0
